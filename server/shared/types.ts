@@ -68,6 +68,20 @@ export type AuthenticatedWebSocketRequest = IncomingMessage & {
 export type LLMProvider = 'claude' | 'codex' | 'gemini' | 'cursor' | 'hoocode' | 'opencode';
 
 /**
+ * Integration tier for a provider.
+ *
+ * The runtime source of truth for each provider's tier is the `PROVIDERS` list
+ * in `shared/modelConstants.js`; this type mirrors the allowed values so the
+ * server registry can stay type-safe.
+ *
+ * - 'first':  Primary, featured integration.
+ * - 'second': Supported, secondary integration.
+ * - 'hidden': Retired — not offered for new sessions, but existing sessions
+ *             remain readable so history is never lost.
+ */
+export type ProviderTier = 'first' | 'second' | 'hidden';
+
+/**
  * Message/event variants emitted by provider adapters and normalized transports.
  *
  * Keep this union in sync with event kinds produced by provider session adapters.
