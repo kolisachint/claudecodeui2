@@ -169,6 +169,11 @@ export const getAllSessions = (project: Project): SessionWithProvider[] => {
     __provider: 'opencode' as const,
   }));
 
+  const githubcopilotSessions = (project.githubcopilotSessions || []).map((session) => ({
+    ...session,
+    __provider: 'githubcopilot' as const,
+  }));
+
   return [
     ...claudeSessions,
     ...cursorSessions,
@@ -176,6 +181,7 @@ export const getAllSessions = (project: Project): SessionWithProvider[] => {
     ...geminiSessions,
     ...hoocodeSessions,
     ...openCodeSessions,
+    ...githubcopilotSessions,
   ].sort((a, b) => getSessionDate(b).getTime() - getSessionDate(a).getTime());
 };
 

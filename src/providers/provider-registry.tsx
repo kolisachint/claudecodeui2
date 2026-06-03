@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 
 import ClaudeLogo from '../components/llm-logo-provider/ClaudeLogo';
 import CodexLogo from '../components/llm-logo-provider/CodexLogo';
+import CopilotLogo from '../components/llm-logo-provider/CopilotLogo';
 import CursorLogo from '../components/llm-logo-provider/CursorLogo';
 import GeminiLogo from '../components/llm-logo-provider/GeminiLogo';
 import HoocodeLogo from '../components/llm-logo-provider/HoocodeLogo';
@@ -77,6 +78,14 @@ const PROVIDER_UI_META: Record<
     glyph: '◆',
     description: "Anthropic's official CLI for coding agents.",
     Logo: ClaudeLogo,
+  },
+  githubcopilot: {
+    displayName: 'GitHub Copilot',
+    label: 'Copilot',
+    vendor: 'GitHub',
+    glyph: '⌘',
+    description: "GitHub's Copilot coding agent in your terminal.",
+    Logo: CopilotLogo,
   },
   codex: {
     displayName: 'Codex',

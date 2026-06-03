@@ -160,7 +160,32 @@ export const OPENCODE_MODELS = {
 };
 
 /**
- * Provider integration tiers.
+ * GitHub Copilot CLI Models
+ *
+ * The Copilot CLI (`@github/copilot`, binary `copilot`) selects a model with
+ * `--model <id>`. Values mirror the strings shown by `copilot help`; the
+ * default (no `--model`) is Claude Sonnet 4.5. Auth is via a GitHub token
+ * (COPILOT_GITHUB_TOKEN / GH_TOKEN / GITHUB_TOKEN) or `gh auth`.
+ */
+export const COPILOT_MODELS = {
+  OPTIONS: [
+    { value: "claude-sonnet-4.5", label: "Claude Sonnet 4.5" },
+    { value: "claude-opus-4.5", label: "Claude Opus 4.5 (Preview)" },
+    { value: "claude-haiku-4.5", label: "Claude Haiku 4.5" },
+    { value: "claude-sonnet-4", label: "Claude Sonnet 4" },
+    { value: "gpt-5.1", label: "GPT-5.1" },
+    { value: "gpt-5.1-codex", label: "GPT-5.1 Codex" },
+    { value: "gpt-5.1-codex-mini", label: "GPT-5.1 Codex Mini" },
+    { value: "gpt-5", label: "GPT-5" },
+    { value: "gpt-5-mini", label: "GPT-5 mini" },
+    { value: "gpt-4.1", label: "GPT-4.1" },
+    { value: "gemini-3-pro", label: "Gemini 3 Pro (Preview)" },
+  ],
+
+  DEFAULT: "claude-sonnet-4.5",
+};
+
+/**
  *
  * This is the single source of truth for which CLI integrations the product
  * leads with. It lets us promote/retire providers from one place instead of
@@ -186,6 +211,7 @@ export const OPENCODE_MODELS = {
 export const PROVIDERS = [
   { id: "hoocode", name: "Hoocode", models: HOOCODE_MODELS, tier: "first" },
   { id: "claude", name: "Anthropic", models: CLAUDE_MODELS, tier: "second" },
+  { id: "githubcopilot", name: "GitHub Copilot", models: COPILOT_MODELS, tier: "second" },
   { id: "codex", name: "OpenAI", models: CODEX_MODELS, tier: "hidden" },
   { id: "gemini", name: "Google", models: GEMINI_MODELS, tier: "hidden" },
   { id: "cursor", name: "Cursor", models: CURSOR_MODELS, tier: "hidden" },

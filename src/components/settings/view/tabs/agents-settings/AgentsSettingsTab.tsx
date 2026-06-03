@@ -80,6 +80,10 @@ export default function AgentsSettingsTab({
       authStatus: providerAuthStatus.opencode,
       onLogin: () => onProviderLogin('opencode'),
     },
+    githubcopilot: {
+      authStatus: providerAuthStatus.githubcopilot,
+      onLogin: () => onProviderLogin('githubcopilot'),
+    },
   }), [
     onProviderLogin,
     providerAuthStatus.claude,
@@ -88,6 +92,7 @@ export default function AgentsSettingsTab({
     providerAuthStatus.gemini,
     providerAuthStatus.hoocode,
     providerAuthStatus.opencode,
+    providerAuthStatus.githubcopilot,
   ]);
 
   return (

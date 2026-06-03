@@ -57,6 +57,12 @@ import {
     isOpenCodeSessionActive,
     getActiveOpenCodeSessions,
 } from './opencode-cli.js';
+import {
+    spawnCopilot,
+    abortCopilotSession,
+    isCopilotSessionActive,
+    getActiveCopilotSessions,
+} from './copilot-cli.js';
 import sessionManager from './sessionManager.js';
 import {
     stripAnsiSequences,
@@ -108,12 +114,14 @@ const wss = createWebSocketServer(server, {
         spawnGemini,
         spawnHoocode,
         spawnOpenCode,
+        spawnCopilot,
         abortClaudeSDKSession,
         abortCursorSession,
         abortCodexSession,
         abortGeminiSession,
         abortPiSession,
         abortOpenCodeSession,
+        abortCopilotSession,
         resolveToolApproval,
         isClaudeSDKSessionActive,
         isCursorSessionActive,
@@ -121,6 +129,7 @@ const wss = createWebSocketServer(server, {
         isGeminiSessionActive,
         isPiSessionActive,
         isOpenCodeSessionActive,
+        isCopilotSessionActive,
         reconnectSessionWriter,
         getPendingApprovalsForSession,
         getActiveClaudeSDKSessions,
@@ -129,6 +138,7 @@ const wss = createWebSocketServer(server, {
         getActiveGeminiSessions,
         getActivePiSessions,
         getActiveOpenCodeSessions,
+        getActiveCopilotSessions,
     },
     shell: {
         getSessionById: (sessionId) => sessionManager.getSession(sessionId),

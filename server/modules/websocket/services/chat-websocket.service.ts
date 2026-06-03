@@ -31,12 +31,14 @@ type ChatWebSocketDependencies = {
   spawnGemini: (command: string, options: unknown, writer: WebSocketWriter) => Promise<unknown>;
   spawnHoocode: (command: string, options: unknown, writer: WebSocketWriter) => Promise<unknown>;
   spawnOpenCode: (command: string, options: unknown, writer: WebSocketWriter) => Promise<unknown>;
+  spawnCopilot: (command: string, options: unknown, writer: WebSocketWriter) => Promise<unknown>;
   abortClaudeSDKSession: (sessionId: string) => Promise<boolean>;
   abortCursorSession: (sessionId: string) => boolean;
   abortCodexSession: (sessionId: string) => boolean;
   abortGeminiSession: (sessionId: string) => boolean;
   abortPiSession: (sessionId: string) => boolean;
   abortOpenCodeSession: (sessionId: string) => boolean;
+  abortCopilotSession: (sessionId: string) => boolean;
   resolveToolApproval: (
     requestId: string,
     payload: {
@@ -52,6 +54,7 @@ type ChatWebSocketDependencies = {
   isGeminiSessionActive: (sessionId: string) => boolean;
   isPiSessionActive: (sessionId: string) => boolean;
   isOpenCodeSessionActive: (sessionId: string) => boolean;
+  isCopilotSessionActive: (sessionId: string) => boolean;
   reconnectSessionWriter: (sessionId: string, ws: WebSocket) => boolean;
   getPendingApprovalsForSession: (sessionId: string) => unknown[];
   getActiveClaudeSDKSessions: () => unknown;
@@ -60,6 +63,7 @@ type ChatWebSocketDependencies = {
   getActiveGeminiSessions: () => unknown;
   getActivePiSessions: () => unknown;
   getActiveOpenCodeSessions: () => unknown;
+  getActiveCopilotSessions: () => unknown;
 };
 
 /**
@@ -73,6 +77,7 @@ function readProvider(value: unknown): LLMProvider {
     || value === 'gemini'
     || value === 'hoocode'
     || value === 'opencode'
+    || value === 'githubcopilot'
   ) {
     return value;
   }
@@ -160,6 +165,11 @@ export function handleChatConnection(
         return;
       }
 
+      if (messageType === 'githubcopilot-command') {
+        await dependencies.spawnCopilot(data.command ?? '', data.options, writer);
+        return;
+      }
+
       if (messageType === 'cursor-resume') {
         await dependencies.spawnCursor(
           '',
@@ -188,6 +198,8 @@ export function handleChatConnection(
           success = dependencies.abortPiSession(sessionId);
         } else if (provider === 'opencode') {
           success = dependencies.abortOpenCodeSession(sessionId);
+        } else if (provider === 'githubcopilot') {
+          success = dependencies.abortCopilotSession(sessionId);
         } else {
           success = await dependencies.abortClaudeSDKSession(sessionId);
         }
@@ -248,6 +260,8 @@ export function handleChatConnection(
           isActive = dependencies.isPiSessionActive(sessionId);
         } else if (provider === 'opencode') {
           isActive = dependencies.isOpenCodeSessionActive(sessionId);
+        } else if (provider === 'githubcopilot') {
+          isActive = dependencies.isCopilotSessionActive(sessionId);
         } else {
           isActive = dependencies.isClaudeSDKSessionActive(sessionId);
           if (isActive) {

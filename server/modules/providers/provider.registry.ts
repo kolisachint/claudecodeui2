@@ -4,6 +4,7 @@ import { CursorProvider } from '@/modules/providers/list/cursor/cursor.provider.
 import { GeminiProvider } from '@/modules/providers/list/gemini/gemini.provider.js';
 import { OpenCodeProvider } from '@/modules/providers/list/opencode/opencode.provider.js';
 import { HoocodeProvider } from '@/modules/providers/list/hoocode/hoocode.provider.js';
+import { CopilotProvider } from '@/modules/providers/list/copilot/copilot.provider.js';
 import type { IProvider } from '@/shared/interfaces.js';
 import type { LLMProvider, ProviderTier } from '@/shared/types.js';
 import { AppError } from '@/shared/utils.js';
@@ -31,6 +32,7 @@ const providerFactories: Record<LLMProvider, () => IProvider> = {
   gemini: () => new GeminiProvider(),
   hoocode: () => new HoocodeProvider(),
   opencode: () => new OpenCodeProvider(),
+  githubcopilot: () => new CopilotProvider(),
 };
 
 // Instantiate in the order declared by the shared config so listings reflect
