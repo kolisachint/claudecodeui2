@@ -117,7 +117,7 @@ export default function NotificationsSettingsTab({
             <SettingsRow label="Enable push" hint="Requires browser permission">
               <Toggle checked={isPushSubscribed} onChange={handlePushToggle} />
             </SettingsRow>
-            <SettingsRow label="Only when tab is hidden" hint="Skip notifications if HooCowork is in focus">
+            <SettingsRow label="Only when tab is hidden">
               <Toggle checked={onlyWhenHidden} onChange={setOnlyWhenHidden} />
             </SettingsRow>
             {isPushLoading && (

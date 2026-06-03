@@ -12,6 +12,8 @@ export default function AgentCategoryContentSection({
   agentContextById,
   claudePermissions,
   onClaudePermissionsChange,
+  hoocodePermissions,
+  onHoocodePermissionsChange,
   cursorPermissions,
   onCursorPermissionsChange,
   codexPermissionMode,
@@ -61,6 +63,26 @@ export default function AgentCategoryContentSection({
         disallowedTools={claudePermissions.disallowedTools}
         onDisallowedToolsChange={(value) => {
           onClaudePermissionsChange({ ...claudePermissions, disallowedTools: value });
+        }}
+      />
+    );
+  }
+
+  if (selectedCategory === 'permissions' && selectedAgent === 'hoocode') {
+    return (
+      <PermissionsContent
+        agent="hoocode"
+        skipPermissions={hoocodePermissions.skipPermissions}
+        onSkipPermissionsChange={(value) => {
+          onHoocodePermissionsChange({ ...hoocodePermissions, skipPermissions: value });
+        }}
+        allowedTools={hoocodePermissions.allowedTools}
+        onAllowedToolsChange={(value) => {
+          onHoocodePermissionsChange({ ...hoocodePermissions, allowedTools: value });
+        }}
+        disallowedTools={hoocodePermissions.disallowedTools}
+        onDisallowedToolsChange={(value) => {
+          onHoocodePermissionsChange({ ...hoocodePermissions, disallowedTools: value });
         }}
       />
     );

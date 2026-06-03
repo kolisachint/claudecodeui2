@@ -85,7 +85,6 @@ const ChatHeader = memo(function ChatHeader({
     <header className="chat-header-stack" data-component="chat-header">
       <div className="chat-header chat-header-info">
         <div className="chat-title">
-          <span className="chat-eyebrow">{t('header.session', { defaultValue: 'Session' })}</span>
           <span className="chat-name" title={sessionId ?? undefined}>{sessionLabel}</span>
         </div>
         <div className="chat-meta">

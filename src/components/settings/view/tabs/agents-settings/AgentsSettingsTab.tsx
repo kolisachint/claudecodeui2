@@ -14,6 +14,8 @@ export default function AgentsSettingsTab({
   onProviderLogin,
   claudePermissions,
   onClaudePermissionsChange,
+  hoocodePermissions,
+  onHoocodePermissionsChange,
   cursorPermissions,
   onCursorPermissionsChange,
   codexPermissionMode,
@@ -45,11 +47,6 @@ export default function AgentsSettingsTab({
   }, [isWindowsServer, selectedAgent]);
 
   useEffect(() => {
-    if (selectedAgent === 'hoocode' && selectedCategory !== 'account') {
-      setSelectedCategory('account');
-      return;
-    }
-
     if (selectedAgent === 'opencode' && selectedCategory === 'permissions') {
       setSelectedCategory('account');
     }
@@ -119,6 +116,8 @@ export default function AgentsSettingsTab({
         agentContextById={agentContextById}
         claudePermissions={claudePermissions}
         onClaudePermissionsChange={onClaudePermissionsChange}
+        hoocodePermissions={hoocodePermissions}
+        onHoocodePermissionsChange={onHoocodePermissionsChange}
         cursorPermissions={cursorPermissions}
         onCursorPermissionsChange={onCursorPermissionsChange}
         codexPermissionMode={codexPermissionMode}

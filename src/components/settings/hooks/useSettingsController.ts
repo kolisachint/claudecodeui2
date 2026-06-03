@@ -130,6 +130,9 @@ export function useSettingsController({ isOpen, initialTab }: UseSettingsControl
   const [claudePermissions, setClaudePermissions] = useState<ClaudePermissionsState>(() => (
     createEmptyClaudePermissions()
   ));
+  const [hoocodePermissions, setHoocodePermissions] = useState<ClaudePermissionsState>(() => (
+    createEmptyClaudePermissions()
+  ));
   const [cursorPermissions, setCursorPermissions] = useState<CursorPermissionsState>(() => (
     createEmptyCursorPermissions()
   ));
@@ -201,6 +204,7 @@ export function useSettingsController({ isOpen, initialTab }: UseSettingsControl
     } catch (error) {
       console.error('Error loading settings:', error);
       setClaudePermissions(createEmptyClaudePermissions());
+      setHoocodePermissions(createEmptyClaudePermissions());
       setCursorPermissions(createEmptyCursorPermissions());
       setNotificationPreferences(createDefaultNotificationPreferences());
       setCodexPermissionMode('default');
@@ -252,6 +256,13 @@ export function useSettingsController({ isOpen, initialTab }: UseSettingsControl
         lastUpdated: now,
       }));
 
+      localStorage.setItem('hoocode-settings', JSON.stringify({
+        allowedTools: hoocodePermissions.allowedTools,
+        disallowedTools: hoocodePermissions.disallowedTools,
+        skipPermissions: hoocodePermissions.skipPermissions,
+        lastUpdated: now,
+      }));
+
       const notificationResponse = await authenticatedFetch('/api/settings/notification-preferences', {
         method: 'PUT',
         body: JSON.stringify(notificationPreferences),
@@ -269,6 +280,9 @@ export function useSettingsController({ isOpen, initialTab }: UseSettingsControl
     claudePermissions.allowedTools,
     claudePermissions.disallowedTools,
     claudePermissions.skipPermissions,
+    hoocodePermissions.allowedTools,
+    hoocodePermissions.disallowedTools,
+    hoocodePermissions.skipPermissions,
     codexPermissionMode,
     cursorPermissions.allowedCommands,
     cursorPermissions.disallowedCommands,
@@ -370,6 +384,8 @@ export function useSettingsController({ isOpen, initialTab }: UseSettingsControl
     updateCodeEditorSetting,
     claudePermissions,
     setClaudePermissions,
+    hoocodePermissions,
+    setHoocodePermissions,
     cursorPermissions,
     setCursorPermissions,
     notificationPreferences,

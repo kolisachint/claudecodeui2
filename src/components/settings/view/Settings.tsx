@@ -30,6 +30,8 @@ function Settings({ isOpen, onClose, projects = [], initialTab = 'agents', varia
     updateCodeEditorSetting,
     claudePermissions,
     setClaudePermissions,
+    hoocodePermissions,
+    setHoocodePermissions,
     notificationPreferences,
     setNotificationPreferences,
     cursorPermissions,
@@ -101,6 +103,8 @@ function Settings({ isOpen, onClose, projects = [], initialTab = 'agents', varia
                 onProviderLogin={openLoginForProvider}
                 claudePermissions={claudePermissions}
                 onClaudePermissionsChange={setClaudePermissions}
+                hoocodePermissions={hoocodePermissions}
+                onHoocodePermissionsChange={setHoocodePermissions}
                 cursorPermissions={cursorPermissions}
                 onCursorPermissionsChange={setCursorPermissions}
                 codexPermissionMode={codexPermissionMode}

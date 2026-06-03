@@ -164,7 +164,7 @@ export default function AppearanceSettingsTab({
 
       {/* Density Section */}
       <SettingsSection title="Density">
-        <SettingsRow label="Compact mode" hint="Tighter spacing across the app">
+        <SettingsRow label="Compact mode">
           <Toggle checked={compactMode} onChange={setCompactMode} />
         </SettingsRow>
         <SettingsRow label="Animations" hint="Disable for prefers-reduced-motion">
@@ -172,23 +172,7 @@ export default function AppearanceSettingsTab({
         </SettingsRow>
       </SettingsSection>
 
-      {/* Project Sorting - Preserved from repo */}
-      <SettingsSection title={t('appearanceSettings.projectSorting.label')}>
-        <SettingsRow
-          label={t('appearanceSettings.projectSorting.label')}
-          hint={t('appearanceSettings.projectSorting.description')}
-        >
-          <select
-            value={projectSortOrder}
-            onChange={(e) => onProjectSortOrderChange(e.target.value as ProjectSortOrder)}
-            className="composer-model"
-            style={{ minWidth: 160 }}
-          >
-            <option value="name">{t('appearanceSettings.projectSorting.alphabetical')}</option>
-            <option value="date">{t('appearanceSettings.projectSorting.recentActivity')}</option>
-          </select>
-        </SettingsRow>
-      </SettingsSection>
+
     </>
   );
 }

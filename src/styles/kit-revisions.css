@@ -123,7 +123,7 @@
   flex: 1; display: flex; min-height: 0; background: var(--paper);
 }
 .settings-rail {
-  width: 220px; flex: 0 0 220px;
+  width: 200px; flex: 0 0 200px;
   border-right: 1px solid var(--line);
   background: var(--paper-2);
   padding: var(--s-4) var(--s-2);
@@ -163,9 +163,9 @@
 
 .settings-pane { flex: 1; overflow-y: auto; min-width: 0; }
 .settings-content {
-  max-width: 720px;
-  padding: var(--s-6) var(--s-7);
-  display: flex; flex-direction: column; gap: var(--s-5);
+  max-width: 640px;
+  padding: var(--s-5) var(--s-6);
+  display: flex; flex-direction: column; gap: var(--s-4);
 }
 .settings-h1 { font-size: var(--fs-2xl); font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
 .settings-sub { font-size: var(--fs-sm); color: var(--ink-3); margin-top: -16px; }
@@ -184,7 +184,7 @@
 .settings-row {
   display: flex; justify-content: space-between; align-items: center;
   gap: var(--s-4);
-  padding: 10px 14px; border-bottom: 1px solid var(--line);
+  padding: 8px 14px; border-bottom: 1px solid var(--line);
 }
 .settings-section-body > .settings-row:last-child { border-bottom: none; }
 .settings-row-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
