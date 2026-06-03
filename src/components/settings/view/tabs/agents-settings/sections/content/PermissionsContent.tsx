@@ -335,7 +335,7 @@ function ToolToggleRow({ tool, checked, onChange }: ToolToggleRowProps) {
 }
 
 type ClaudePermissionsProps = {
-  agent: 'claude';
+  agent: 'claude' | 'hoocode';
   skipPermissions: boolean;
   onSkipPermissionsChange: (value: boolean) => void;
   allowedTools: string[];
@@ -367,13 +367,6 @@ function ClaudePermissions({
     }
   };
 
-  // Revoke all approvals
-  const handleRevokeAll = () => {
-    onAllowedToolsChange([]);
-    onDisallowedToolsChange([]);
-    onSkipPermissionsChange(false);
-  };
-
   return (
     <>
       {/* Tool permissions section - design style */}
@@ -391,13 +384,6 @@ function ClaudePermissions({
               onChange={(checked) => toggleTool(tool.key, checked)}
             />
           ))}
-        </div>
-        {/* Panic button - design style */}
-        <div className="settings-panic">
-          <button type="button" className="btn btn-sm btn-danger" onClick={handleRevokeAll}>
-            <AlertTriangle className="h-3.5 w-3.5" />
-            <span>{t('permissions.revokeAll')}</span>
-          </button>
         </div>
       </div>
 
@@ -630,8 +616,12 @@ function GeminiPermissions({ permissionMode, onPermissionModeChange }: Omit<Gemi
 
 type PermissionsContentProps = ClaudePermissionsProps | CursorPermissionsProps | CodexPermissionsProps | GeminiPermissionsProps;
 
+function isClaudeStyle(props: PermissionsContentProps): props is ClaudePermissionsProps {
+  return props.agent === 'claude' || props.agent === 'hoocode';
+}
+
 export default function PermissionsContent(props: PermissionsContentProps) {
-  if (props.agent === 'claude') {
+  if (isClaudeStyle(props)) {
     return <ClaudePermissions {...props} />;
   }
 

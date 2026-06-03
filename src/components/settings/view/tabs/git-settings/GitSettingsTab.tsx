@@ -71,10 +71,6 @@ export default function GitSettingsTab() {
   const [confirmBeforePush, setConfirmBeforePush] = useState(() => {
     return localStorage.getItem('gitConfirmBeforePush') !== 'false'; // default true
   });
-  const [signCommits, setSignCommits] = useState(() => {
-    return localStorage.getItem('gitSignCommits') === 'true'; // default false
-  });
-
   // Persist behavior settings
   useEffect(() => {
     localStorage.setItem('gitAutoFetch', String(autoFetch));
@@ -83,10 +79,6 @@ export default function GitSettingsTab() {
   useEffect(() => {
     localStorage.setItem('gitConfirmBeforePush', String(confirmBeforePush));
   }, [confirmBeforePush]);
-
-  useEffect(() => {
-    localStorage.setItem('gitSignCommits', String(signCommits));
-  }, [signCommits]);
 
   const handleSave = () => {
     void saveGitConfig();
@@ -133,15 +125,13 @@ export default function GitSettingsTab() {
 
       {/* Behavior Section */}
       <SettingsSection title="Behavior">
-        <SettingsRow label="Auto-fetch every 5 min" hint="Polls remote for new commits">
+        <SettingsRow label="Auto-fetch every 5 min">
           <Toggle checked={autoFetch} onChange={setAutoFetch} />
         </SettingsRow>
         <SettingsRow label="Confirm before push">
           <Toggle checked={confirmBeforePush} onChange={setConfirmBeforePush} />
         </SettingsRow>
-        <SettingsRow label="Sign commits (GPG)">
-          <Toggle checked={signCommits} onChange={setSignCommits} />
-        </SettingsRow>
+
       </SettingsSection>
     </>
   );

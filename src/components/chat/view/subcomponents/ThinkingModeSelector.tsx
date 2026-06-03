@@ -10,9 +10,10 @@ type ThinkingModeSelectorProps = {
   onModeChange: (modeId: string) => void;
   onClose?: () => void;
   className?: string;
+  variant?: 'icon' | 'pill';
 };
 
-function ThinkingModeSelector({ selectedMode, onModeChange, onClose, className = '' }: ThinkingModeSelectorProps) {
+function ThinkingModeSelector({ selectedMode, onModeChange, onClose, className = '', variant = 'icon' }: ThinkingModeSelectorProps) {
   const { t } = useTranslation('chat');
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -146,15 +147,25 @@ function ThinkingModeSelector({ selectedMode, onModeChange, onClose, className =
 
           setIsOpen(true);
         }}
-        className={`flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 sm:h-10 sm:w-10 ${selectedMode === 'none'
-            ? 'bg-[var(--paper-2)] hover:bg-[var(--paper-3)]'
-            : 'bg-[var(--brand-accent-soft)] hover:bg-[var(--brand-accent-soft)]'
-          }`}
+        className={variant === 'pill'
+          ? `composer-think ${selectedMode === 'none' ? 'off' : ''}`
+          : `flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 sm:h-10 sm:w-10 ${selectedMode === 'none'
+              ? 'bg-[var(--paper-2)] hover:bg-[var(--paper-3)]'
+              : 'bg-[var(--brand-accent-soft)] hover:bg-[var(--brand-accent-soft)]'
+            }`
+        }
         title={t('thinkingMode.buttonTitle', { mode: currentMode.name })}
         aria-haspopup="dialog"
         aria-expanded={isOpen}
       >
-        <IconComponent className={`h-5 w-5 ${currentMode.color}`} />
+        <IconComponent size={variant === 'pill' ? 13 : 20} className={variant === 'pill' ? '' : `h-5 w-5 ${currentMode.color}`} />
+        {variant === 'pill' && (
+          <span>
+            {currentMode.name === 'No thinking'
+              ? 'no think'
+              : currentMode.name.toLowerCase().replace('think ', '')}
+          </span>
+        )}
       </button>
 
       {isOpen && typeof document !== 'undefined' && createPortal(

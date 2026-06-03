@@ -11,7 +11,10 @@ import type {
   SetStateAction,
   TouchEvent,
 } from 'react';
-import { PaperclipIcon, XIcon, ArrowDownIcon } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { PaperclipIcon, XIcon, ArrowDownIcon, ChevronDown, Brain } from 'lucide-react';
+
+import { getProviderDescriptor } from '../../../../providers/provider-registry';
 
 import type { PendingPermissionRequest, PermissionMode, Provider } from '../../types/types';
 import {
@@ -167,6 +170,21 @@ export default function ChatComposer({
 }: ChatComposerProps) {
   const { t } = useTranslation('chat');
   const textareaRect = textareaRef.current?.getBoundingClientRect();
+
+  const [modelDropdownOpen, setModelDropdownOpen] = useState(false);
+  const modelDropdownRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!modelDropdownOpen) return;
+    const handleClick = (e: globalThis.MouseEvent) => {
+      if (modelDropdownRef.current && !modelDropdownRef.current.contains(e.target as Node)) {
+        setModelDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [modelDropdownOpen]);
+  const providerDesc = getProviderDescriptor(provider as string);
+  const currentModelLabel = modelOptions.find(o => o.value === activeModel)?.label || activeModel;
   const commandMenuPosition = {
     top: textareaRect ? Math.max(16, textareaRect.top - 316) : 0,
     left: textareaRect ? textareaRect.left : 16,
@@ -325,35 +343,46 @@ export default function ChatComposer({
               className="relative"
             >
               <span style={{ fontFamily: 'var(--font-mono)' }}>/</span>
-              {slashCommandsCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--fs-xs)] font-bold text-[var(--accent-ink)]">
-                  {slashCommandsCount}
-                </span>
-              )}
             </PromptInputButton>
 
             <span className="composer-divider" />
 
-            <select
-              className="composer-model"
-              value={activeModel}
-              onChange={(event) => onModelChange(event.target.value)}
-              title={t('header.modelLabel', { defaultValue: 'Active model' })}
-            >
-              {modelOptions.length === 0 || !modelOptions.find((option) => option.value === activeModel) ? (
-                <option value={activeModel}>{activeModel}</option>
-              ) : null}
-              {modelOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            <div className="relative" ref={modelDropdownRef}>
+              <button
+                type="button"
+                className="modelpick-card"
+                onClick={() => setModelDropdownOpen(o => !o)}
+                title={t('header.modelLabel', { defaultValue: 'Active model' })}
+              >
+                <span className="modelpick-glyph">{providerDesc?.glyph || '◆'}</span>
+                <span className="modelpick-provider">{providerDesc?.label || String(provider)}</span>
+                <span style={{ color: 'var(--ink-4)' }}>·</span>
+                <span className="modelpick-model">{currentModelLabel}</span>
+                <ChevronDown size={11} className="modelpick-chev" />
+              </button>
+              {modelDropdownOpen && (
+                <div className="think-dropdown" style={{ width: 280, left: 0, bottom: 'calc(100% + 6px)' }}>
+                  {modelOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className={`think-option ${option.value === activeModel ? 'active' : ''}`}
+                      onClick={() => { onModelChange(option.value); setModelDropdownOpen(false); }}
+                    >
+                      <div className="think-option-head">
+                        <span className="think-option-name">{option.label}</span>
+                        {option.value === activeModel && <span className="think-option-active-pill">active</span>}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <button
               type="button"
               onClick={onModeSwitch}
-              className="composer-mode composer-model"
+              className="composer-mode"
               title={t('input.clickToChangeMode')}
             >
               <span className="composer-mode-dot" data-mode={permissionMode} />
@@ -363,7 +392,7 @@ export default function ChatComposer({
             </button>
 
             {provider === 'claude' && (
-              <ThinkingModeSelector selectedMode={thinkingMode} onModeChange={setThinkingMode} onClose={() => {}} className="" />
+              <ThinkingModeSelector selectedMode={thinkingMode} onModeChange={setThinkingMode} onClose={() => {}} className="" variant="pill" />
             )}
 
             {hasInput && (
@@ -399,7 +428,7 @@ export default function ChatComposer({
               onBlur={() => onInputFocusChange?.(false)}
               onInput={onTextareaInput}
               placeholder={placeholder}
-              rows={3}
+              rows={2}
             />
           </PromptInputBody>
 

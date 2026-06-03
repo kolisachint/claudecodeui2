@@ -25,8 +25,8 @@ export default function ModelsContent({ agent }: ModelsContentProps) {
   const [selectedModel, setSelectedModel] = useState('claude-sonnet-4-5');
   const [thinkingBudget, setThinkingBudget] = useState('auto');
 
-  // Only show for Claude initially - other agents can be added later
-  if (agent !== 'claude') {
+  // Only show for Claude and Hoocode initially - other agents can be added later
+  if (agent !== 'claude' && agent !== 'hoocode') {
     return (
       <div className="settings-section">
         <div className="settings-section-head">
