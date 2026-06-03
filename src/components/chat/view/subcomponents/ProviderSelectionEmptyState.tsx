@@ -325,7 +325,7 @@ export default function ProviderSelectionEmptyState({
                     )}
                   </div>
                 )}
-                <CommandList className="modelpick-list max-h-[350px]">
+                <CommandList className="modelpick-list scrollbar-thin max-h-[350px] overflow-y-auto">
                   <CommandEmpty>
                     {t("providerSelection.noModelsFound", {
                       defaultValue: "No models found.",
@@ -342,7 +342,7 @@ export default function ProviderSelectionEmptyState({
                       )}
                       heading={
                         <span className="flex items-center gap-1.5">
-                          <SessionProviderLogo provider={group.id} className="h-3.5 w-3.5 shrink-0" />
+                          <SessionProviderLogo provider={group.id} className="h-5 w-5 shrink-0" />
                           {group.name}
                         </span>
                       }

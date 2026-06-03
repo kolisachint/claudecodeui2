@@ -1,3 +1,4 @@
+import SessionProviderLogo from '@/components/llm-logo-provider/SessionProviderLogo';
 import type { AgentProvider } from '../../../../types/types';
 import type { AgentSelectorSectionProps } from '../types';
 
@@ -6,19 +7,9 @@ const AGENT_NAMES: Record<AgentProvider, string> = {
   cursor: 'Cursor CLI',
   codex: 'Codex',
   gemini: 'Gemini CLI',
-  hoocode: 'Hoocode',
+  hoocode: 'HooCode',
   opencode: 'OpenCode',
   githubcopilot: 'GitHub Copilot',
-};
-
-const AGENT_GLYPHS: Record<AgentProvider, string> = {
-  claude: '◆',
-  cursor: '◇',
-  codex: '○',
-  gemini: '△',
-  hoocode: '●',
-  opencode: '◎',
-  githubcopilot: '⌘',
 };
 
 export default function AgentSelectorSection({
@@ -40,7 +31,7 @@ export default function AgentSelectorSection({
             className={`agent-tile ${selectedAgent === agent ? 'active' : ''}`}
             onClick={() => onSelectAgent(agent)}
           >
-            <span className="agent-glyph">{AGENT_GLYPHS[agent]}</span>
+            <SessionProviderLogo provider={agent} className="agent-glyph h-5 w-5" />
             <span className="agent-name truncate">{AGENT_NAMES[agent]}</span>
             <span className={`status-dot ${isAuthed ? 'dot-ok' : 'dot-off'}`} />
           </button>

@@ -45,10 +45,10 @@ export default function GenerateTasksModal({
         <div className="modal-body">
           <div className="border-[var(--brand-accent)]/20 bg-[var(--brand-accent)]/5 rounded-lg border p-4">
             <h4 className="mb-2 font-semibold text-[var(--ink)]">
-              Ask Claude Code directly
+              Ask HooCode directly
             </h4>
             <p className="mb-3 text-sm text-[var(--ink-3)]">
-              Save this PRD, then ask Claude Code in chat to parse the file and create your initial tasks.
+              Save this PRD, then ask HooCode in chat to parse the file and create your initial tasks.
             </p>
 
             <div className="rounded border border-[var(--line)] bg-[var(--paper)] p-3">

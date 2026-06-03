@@ -35,7 +35,7 @@ const PROVIDER_WATCH_PATHS: Array<{ provider: LLMProvider; rootPath: string }> =
   },
   {
     provider: 'hoocode',
-    rootPath: path.join(os.homedir(), '.hoocode', 'agent', 'sessions'),
+    rootPath: path.join(os.homedir(), '.hoocode', 'sessions'),
   },
 ];
 

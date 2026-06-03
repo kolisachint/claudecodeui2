@@ -1,20 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <!-- Background rounded square -->
-  <rect x="2" y="2" width="60" height="60" rx="12" fill="#111110"/>
-  
-  <!-- Outer glow ring -->
-  <rect x="2" y="2" width="60" height="60" rx="12" stroke="#2a2a29" stroke-width="1"/>
-  
-  <!-- Code bracket left with AI sparkle -->
-  <path d="M20 24L14 32L20 40" stroke="#f5f5f5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-  
-  <!-- Code bracket right -->
-  <path d="M44 24L50 32L44 40" stroke="#f5f5f5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-  
-  <!-- Center slash representing coding/terminal -->
-  <path d="M28 44L36 20" stroke="#6366f1" stroke-width="3" stroke-linecap="round"/>
-  
-  <!-- AI sparkle dots -->
-  <circle cx="32" cy="14" r="2" fill="#6366f1"/>
-  <circle cx="32" cy="50" r="2" fill="#6366f1"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-labelledby="hoo-icon-title">
+  <title id="hoo-icon-title">Hoo symbol — app icon</title>
+  <rect width="200" height="200" rx="40" fill="#09090B"/>
+  <path d="M40,72 A34,34 0 0 0 40,128" fill="none" stroke="#00F0FF" stroke-width="6" stroke-linecap="round"/>
+  <path d="M160,72 A34,34 0 0 1 160,128" fill="none" stroke="#00F0FF" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="70" cy="100" r="30" fill="none" stroke="#FAFAFA" stroke-width="9"/>
+  <circle cx="130" cy="100" r="30" fill="none" stroke="#FAFAFA" stroke-width="9"/>
+  <polygon points="100,89 111,100 100,111 89,100" fill="#00F0FF"/>
 </svg>

@@ -3,6 +3,7 @@ import type { FormEvent } from 'react';
 
 import { useAuth } from '../context/AuthContext';
 
+import BrandLogo from '../../../shared/view/ui/BrandLogo';
 import AuthErrorAlert from './AuthErrorAlert';
 import AuthInputField from './AuthInputField';
 import AuthScreenLayout from './AuthScreenLayout';
@@ -87,7 +88,7 @@ export default function SetupForm() {
       title="Welcome to HooCowork"
       description="Set up your account to get started"
       footerText="This is a single-user system. Only one account can be created."
-      logo={<img src="/logo.svg" alt="HooCowork" className="h-16 w-16" />}
+      logo={<BrandLogo className="h-16 w-16" />}
     >
       <form onSubmit={handleSubmit} className="auth-form space-y-4">
         <AuthInputField

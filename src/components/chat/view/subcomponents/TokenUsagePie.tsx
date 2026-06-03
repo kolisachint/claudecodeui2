@@ -4,51 +4,38 @@ type TokenUsagePieProps = {
 };
 
 export default function TokenUsagePie({ used, total }: TokenUsagePieProps) {
-  // Token usage visualization component
-  // Only bail out on missing values or non‐positive totals; allow used===0 to render 0%
   if (used == null || total == null || total <= 0) return null;
 
-  const percentage = Math.min(100, (used / total) * 100);
-  const radius = 10;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (percentage / 100) * circumference;
+  const pct = Math.min(1, used / total);
+  const c = 7;
+  const r = 6;
+  const circumference = 2 * Math.PI * r;
 
-  // Color based on usage level — use design system tokens
-  const getColor = () => {
-    if (percentage < 50) return 'var(--info)';
-    if (percentage < 75) return 'var(--warn)';
-    return 'var(--err)';
-  };
+  const color = pct > 0.85 ? 'var(--err)' : pct > 0.6 ? 'var(--warn)' : 'var(--accent)';
 
   return (
-    <div className="composer-tokens flex items-center gap-2 text-[var(--fs-sm)] text-muted-foreground">
-      <svg width="24" height="24" viewBox="0 0 24 24" className="-rotate-90 transform">
-        {/* Background circle */}
+    <span className="composer-tokens" title={`${used.toLocaleString()} / ${total.toLocaleString()} tokens`}>
+      <svg width="14" height="14" viewBox="0 0 14 14" style={{ verticalAlign: 'middle' }}>
         <circle
-          cx="12"
-          cy="12"
-          r={radius}
+          cx={c}
+          cy={c}
+          r={r}
+          stroke="var(--line)"
+          strokeWidth="1.5"
           fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="text-muted-foreground"
         />
-        {/* Progress circle */}
         <circle
-          cx="12"
-          cy="12"
-          r={radius}
+          cx={c}
+          cy={c}
+          r={r}
+          stroke={color}
+          strokeWidth="1.5"
           fill="none"
-          stroke={getColor()}
-          strokeWidth="2"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
+          strokeDasharray={`${circumference * pct} ${circumference}`}
+          transform={`rotate(-90 ${c} ${c})`}
         />
       </svg>
-      <span title={`${used.toLocaleString()} / ${total.toLocaleString()} tokens`}>
-        {percentage.toFixed(1)}%
-      </span>
-    </div>
+      {Math.round(pct * 100)}%
+    </span>
   );
-}
+};

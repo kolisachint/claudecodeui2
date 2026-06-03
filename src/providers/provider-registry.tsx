@@ -1,12 +1,3 @@
-import type { ComponentType } from 'react';
-
-import ClaudeLogo from '../components/llm-logo-provider/ClaudeLogo';
-import CodexLogo from '../components/llm-logo-provider/CodexLogo';
-import CopilotLogo from '../components/llm-logo-provider/CopilotLogo';
-import CursorLogo from '../components/llm-logo-provider/CursorLogo';
-import GeminiLogo from '../components/llm-logo-provider/GeminiLogo';
-import HoocodeLogo from '../components/llm-logo-provider/HoocodeLogo';
-import OpenCodeLogo from '../components/llm-logo-provider/OpenCodeLogo';
 import type { LLMProvider } from '../types/app';
 import { PROVIDERS } from '../../shared/modelConstants';
 
@@ -18,11 +9,10 @@ import { PROVIDERS } from '../../shared/modelConstants';
  * ADDING A NEW CLI:
  *   1. Add its runtime entry (id, vendor name, models, tier) to
  *      `shared/modelConstants.js` → PROVIDERS.
- *   2. Add a logo component under `src/components/llm-logo-provider/` and one
- *      entry to `PROVIDER_UI_META` below.
+ *   2. Add a glyph entry to `PROVIDER_UI_META` below.
  *   3. Add the backend implementation (an `IProvider`) and register it in
  *      `server/modules/providers/provider.registry.ts`.
- * That's it — pickers, logos, auth status and settings all derive from here,
+ * That's it — pickers, auth status and settings all derive from here,
  * so there are no scattered hardcoded provider arrays to update.
  * ──────────────────────────────────────────────────────────────────────────
  *
@@ -34,8 +24,6 @@ import { PROVIDERS } from '../../shared/modelConstants';
  */
 
 export type ProviderTier = 'first' | 'second' | 'hidden';
-
-type LogoComponent = ComponentType<{ className?: string }>;
 
 export interface ProviderDescriptor {
   id: LLMProvider;
@@ -50,18 +38,17 @@ export interface ProviderDescriptor {
   /** One-line description for the picker. */
   description: string;
   tier: ProviderTier;
-  Logo: LogoComponent;
   /** Backend auth-status endpoint for this provider. */
   authStatusEndpoint: string;
 }
 
 /**
  * UI-only presentation metadata that cannot live in the shared JS config
- * (React logo components, copy, glyphs). Keyed by provider id.
+ * (copy, glyphs). Keyed by provider id.
  */
 const PROVIDER_UI_META: Record<
   LLMProvider,
-  { displayName: string; label: string; vendor: string; glyph: string; description: string; Logo: LogoComponent }
+  { displayName: string; label: string; vendor: string; glyph: string; description: string }
 > = {
   hoocode: {
     displayName: 'HooCode',
@@ -69,7 +56,6 @@ const PROVIDER_UI_META: Record<
     vendor: 'HooCowork',
     glyph: '▽',
     description: "HooCowork's own coding agent.",
-    Logo: HoocodeLogo,
   },
   claude: {
     displayName: 'Claude Code',
@@ -77,7 +63,6 @@ const PROVIDER_UI_META: Record<
     vendor: 'Anthropic',
     glyph: '◆',
     description: "Anthropic's official CLI for coding agents.",
-    Logo: ClaudeLogo,
   },
   githubcopilot: {
     displayName: 'GitHub Copilot',
@@ -85,7 +70,6 @@ const PROVIDER_UI_META: Record<
     vendor: 'GitHub',
     glyph: '⌘',
     description: "GitHub's Copilot coding agent in your terminal.",
-    Logo: CopilotLogo,
   },
   codex: {
     displayName: 'Codex',
@@ -93,7 +77,6 @@ const PROVIDER_UI_META: Record<
     vendor: 'OpenAI',
     glyph: '○',
     description: "OpenAI's Codex CLI.",
-    Logo: CodexLogo,
   },
   gemini: {
     displayName: 'Gemini CLI',
@@ -101,7 +84,6 @@ const PROVIDER_UI_META: Record<
     vendor: 'Google',
     glyph: '△',
     description: "Google's Gemini command-line interface.",
-    Logo: GeminiLogo,
   },
   cursor: {
     displayName: 'Cursor CLI',
@@ -109,7 +91,6 @@ const PROVIDER_UI_META: Record<
     vendor: 'Cursor',
     glyph: '◇',
     description: "Cursor's command-line interface.",
-    Logo: CursorLogo,
   },
   opencode: {
     displayName: 'OpenCode',
@@ -117,7 +98,6 @@ const PROVIDER_UI_META: Record<
     vendor: 'OpenCode',
     glyph: '□',
     description: "OpenCode's command-line coding agent.",
-    Logo: OpenCodeLogo,
   },
 };
 
@@ -136,7 +116,6 @@ export const PROVIDER_DESCRIPTORS: ProviderDescriptor[] = PROVIDERS.map((cfg) =>
     vendor: meta.vendor,
     glyph: meta.glyph,
     description: meta.description,
-    Logo: meta.Logo,
     authStatusEndpoint: `/api/providers/${id}/auth/status`,
   };
 });
@@ -162,11 +141,6 @@ export const DEFAULT_PROVIDER: LLMProvider = VISIBLE_PROVIDER_IDS[0] ?? 'claude'
 export function getProviderDescriptor(id: string | null | undefined): ProviderDescriptor | undefined {
   if (!id) return undefined;
   return DESCRIPTOR_BY_ID.get(id as LLMProvider);
-}
-
-/** Resolve a provider's logo component, falling back to the Claude mark. */
-export function getProviderLogo(id: string | null | undefined): LogoComponent {
-  return getProviderDescriptor(id)?.Logo ?? ClaudeLogo;
 }
 
 /** Whether a provider is offered for new sessions (not retired). */

@@ -43,7 +43,7 @@ let activeHoocodeProcesses = new Map();
 function getHoocodeSessionDir(projectPath) {
   const cleanPath = (projectPath || process.cwd()).replace(/[^\x20-\x7E]/g, '').trim();
   const encodedPath = cleanPath.replace(/[^a-zA-Z0-9-]/g, '-');
-  return path.join(os.homedir(), '.hoocode', 'agent', 'sessions', encodedPath);
+  return path.join(os.homedir(), '.hoocode', 'sessions', encodedPath);
 }
 
 function findSessionFile(sessionId, projectPath) {

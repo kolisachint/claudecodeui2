@@ -1,154 +1,68 @@
 # Contributing to HooCowork
 
-Thanks for your interest in contributing to HooCowork! Before you start, please take a moment to read through this guide.
+Thanks for your interest! A few guidelines to keep things smooth.
 
 ## Before You Start
 
-- **Search first.** Check [existing issues](https://github.com/kolisachint/hoocowork/issues) and [pull requests](https://github.com/kolisachint/hoocowork/pulls) to avoid duplicating work.
-- **Discuss first** for new features. Open an [issue](https://github.com/kolisachint/hoocowork/issues/new) to discuss your idea before investing time in implementation. We may already have plans or opinions on how it should work.
-- **Bug fixes are always welcome.** If you spot a bug, feel free to open a PR directly.
+- **Search first** — check [issues](https://github.com/kolisachint/hoocowork/issues) and [PRs](https://github.com/kolisachint/hoocowork/pulls).
+- **Discuss first** for new features — open an issue before investing time.
+- **Bug fixes are always welcome** — feel free to open a PR directly.
 
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) 22 or later
-- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed and configured
 - [Bun](https://bun.sh/) (optional, for fast CI)
 
 ## Getting Started
 
-1. Fork the repository
-2. Clone your fork:
-   ```bash
-   git clone https://github.com/<your-username>/hoocowork.git
-   cd hoocowork
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   # or with Bun:
-   bun install
-   ```
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-5. Create a branch for your changes:
-   ```bash
-   git checkout -b feat/your-feature-name
-   ```
-
-## Project Structure
-
+```bash
+git clone https://github.com/<your-username>/hoocowork.git
+cd hoocowork
+npm install
+npm run dev
 ```
-hoocowork/
-├── src/              # React frontend (Vite + Tailwind)
-│   ├── components/   # UI components
-│   ├── contexts/     # React context providers
-│   ├── hooks/        # Custom React hooks
-│   ├── i18n/         # Internationalization and translations
-│   ├── lib/          # Shared frontend libraries
-│   ├── types/        # TypeScript type definitions
-│   └── utils/        # Frontend utilities
-├── server/           # Express backend
-│   ├── routes/       # API route handlers
-│   ├── middleware/    # Express middleware
-│   ├── database/     # SQLite database layer
-│   └── tools/        # CLI tool integrations
-├── shared/           # Code shared between client and server
-└── public/           # Static assets, icons, PWA manifest
-```
-
-## Development Workflow
-
-- `npm run dev` — Start both the frontend and backend in development mode
-- `npm run build` — Create a production build (or `bun run build`)
-- `npm run server` — Start only the backend server
-- `npm run client` — Start only the Vite dev server
-- `npm test` — Run the test suite (or `bun test`)
 
 ## Making Changes
 
-### Bug Fixes
-
-- Reference the issue number in your PR if one exists
-- Describe how to reproduce the bug in your PR description
-- Add a screenshot or recording for visual bugs
-
-### New Features
-
-- Keep the scope focused — one feature per PR
-- Include screenshots or recordings for UI changes
-
-### Documentation
-
-- Documentation improvements are always welcome
-- Keep language clear and concise
+- One feature or fix per PR.
+- Include screenshots for UI changes.
+- Make sure CI passes (`npm run typecheck && npm run lint`).
 
 ## Commit Convention
 
-We follow [Conventional Commits](https://conventionalcommits.org/) to generate release notes automatically. Every commit message should follow this format:
+We use [Conventional Commits](https://conventionalcommits.org/).
 
 ```
 <type>(optional scope): <description>
 ```
 
-Use imperative, present tense: "add feature" not "added feature" or "adds feature".
-
-### Types
-
 | Type | Description |
 |------|-------------|
-| `feat` | A new feature |
-| `fix` | A bug fix |
-| `perf` | A performance improvement |
-| `refactor` | Code change that neither fixes a bug nor adds a feature |
+| `feat` | New feature |
+| `fix` | Bug fix |
+| `perf` | Performance improvement |
+| `refactor` | Code change with no behavior change |
 | `docs` | Documentation only |
 | `style` | CSS, formatting, visual changes |
-| `chore` | Maintenance, dependencies, config |
-| `ci` | CI/CD pipeline changes |
+| `chore` | Maintenance, deps, config |
+| `ci` | CI/CD changes |
 | `test` | Adding or updating tests |
 | `build` | Build system changes |
 
-### Examples
+Examples:
 
 ```bash
 feat: add conversation search
-feat(i18n): add Japanese language support
 fix: redirect unauthenticated users to login
-fix(editor): syntax highlighting for .env files
-perf: lazy load code editor component
-refactor(chat): extract message list component
-docs: update API configuration guide
+style(chat): extract message list component
 ```
 
-### Breaking Changes
-
-Add `!` after the type or include `BREAKING CHANGE:` in the commit footer:
+Breaking changes: add `!` after the type.
 
 ```bash
 feat!: redesign settings page layout
 ```
 
-## Pull Requests
-
-- Give your PR a clear, descriptive title following the commit convention above
-- Fill in the PR description with what changed and why
-- Link any related issues
-- Include screenshots for UI changes
-- Make sure CI checks pass (typecheck, lint, build, test) before merging
-- Keep PRs focused — avoid unrelated changes
-
-## Releases
-
-Releases are managed via GitHub Actions. Maintainers trigger the Release workflow manually using `workflow_dispatch` with a patch, minor, or major version increment.
-
-This automatically:
-- Bumps the version based on the selected increment
-- Generates categorized release notes
-- Updates `CHANGELOG.md`
-- Creates a git tag and GitHub Release
-- Publishes to npm
-
 ## License
 
-By contributing, you agree that your contributions will be licensed under the [AGPL-3.0-or-later License](LICENSE), including the additional terms specified in Section 7 of the LICENSE file.
+By contributing, you agree that your contributions will be licensed under [AGPL-3.0-or-later](LICENSE).

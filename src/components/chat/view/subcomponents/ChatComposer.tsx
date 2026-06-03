@@ -29,7 +29,7 @@ import {
 } from '../../../../shared/view/ui';
 
 import CommandMenu from './CommandMenu';
-import ClaudeStatus from './ClaudeStatus';
+
 import ImageAttachment from './ImageAttachment';
 import PermissionRequestsBanner from './PermissionRequestsBanner';
 import ThinkingModeSelector from './ThinkingModeSelector';
@@ -57,7 +57,6 @@ interface ChatComposerProps {
     decision: { allow?: boolean; message?: string; rememberEntry?: string | null; updatedInput?: unknown },
   ) => void;
   handleGrantToolPermission: (suggestion: { entry: string; toolName: string }) => { success: boolean };
-  claudeStatus: { text: string; tokens: number; can_interrupt: boolean } | null;
   isLoading: boolean;
   onAbortSession: () => void;
   provider: Provider | string;
@@ -115,7 +114,6 @@ export default function ChatComposer({
   pendingPermissionRequests,
   handlePermissionDecision,
   handleGrantToolPermission,
-  claudeStatus,
   isLoading,
   onAbortSession,
   provider,
@@ -196,20 +194,8 @@ export default function ChatComposer({
     (r) => r.toolName === 'AskUserQuestion'
   );
 
-  // Hide the thinking/status bar while any permission request is pending
-  const hasPendingPermissions = pendingPermissionRequests.length > 0;
-
   return (
     <div className="composer">
-      {!hasPendingPermissions && (
-        <ClaudeStatus
-          status={claudeStatus}
-          isLoading={isLoading}
-          onAbort={onAbortSession}
-          provider={provider}
-        />
-      )}
-
       {pendingPermissionRequests.length > 0 && (
         <div className="mb-3 w-full">
           <PermissionRequestsBanner
@@ -361,7 +347,7 @@ export default function ChatComposer({
                 <ChevronDown size={11} className="modelpick-chev" />
               </button>
               {modelDropdownOpen && (
-                <div className="think-dropdown" style={{ width: 280, left: 0, bottom: 'calc(100% + 6px)' }}>
+                <div className="think-dropdown max-h-48 overflow-y-auto" style={{ width: 280, left: 0, bottom: 'calc(100% + 6px)' }}>
                   {modelOptions.map((option) => (
                     <button
                       key={option.value}
@@ -437,16 +423,24 @@ export default function ChatComposer({
               {sendByCtrlEnter ? t('input.hintText.ctrlEnter') : t('input.hintText.enter')}
             </span>
             <PromptInputSubmit
-              disabled={!input.trim() || isLoading}
+              disabled={!input.trim() && !isLoading}
               label={t('input.send', { defaultValue: 'Send' })}
               stopLabel={t('input.stop', { defaultValue: 'Stop' })}
               onMouseDown={(event) => {
                 event.preventDefault();
-                onSubmit(event as unknown as MouseEvent<HTMLButtonElement>);
+                if (isLoading) {
+                  onAbortSession();
+                } else {
+                  onSubmit(event as unknown as MouseEvent<HTMLButtonElement>);
+                }
               }}
               onTouchStart={(event) => {
                 event.preventDefault();
-                onSubmit(event as unknown as TouchEvent<HTMLButtonElement>);
+                if (isLoading) {
+                  onAbortSession();
+                } else {
+                  onSubmit(event as unknown as TouchEvent<HTMLButtonElement>);
+                }
               }}
             />
           </PromptInputFooter>
