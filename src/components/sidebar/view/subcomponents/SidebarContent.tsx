@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import {
   ArrowUpCircle, Folder, MessageSquare, PanelLeftClose,
   Plus, RefreshCw, Search, X,
@@ -7,6 +7,37 @@ import type { TFunction } from 'i18next';
 
 import { cn } from '../../../../lib/utils';
 import { IS_PLATFORM } from '../../../../constants/config';
+
+function useIsDark(): boolean {
+  const [isDark, setIsDark] = useState(() =>
+    typeof document !== 'undefined'
+      ? document.documentElement.classList.contains('dark')
+      : false,
+  );
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
+
+  return isDark;
+}
+
+function BrandLogo() {
+  const isDark = useIsDark();
+  const src = isDark ? '/hoocowork.svg' : '/hoocowork-light.svg';
+  return (
+    <img
+      src={src}
+      alt="HooCowork"
+      className="brand-mark"
+      style={{ height: 28, width: 'auto', display: 'block' }}
+    />
+  );
+}
 import type { LoadingProgress, Project } from '../../../../types/app';
 import type { ReleaseInfo } from '../../../../types/sharedTypes';
 import type { ConversationSearchResults, SearchProgress } from '../../hooks/useSidebarController';
@@ -120,26 +151,10 @@ export default function SidebarContent({
         <div className="brand">
           {IS_PLATFORM ? (
             <a href="https://hoocowork.app/dashboard" className="brand" style={{ textDecoration: 'none' }} title={t('tooltips.viewEnvironments')}>
-              <span className="brand-mark" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 64 64" fill="none">
-                  <rect x="2" y="2" width="60" height="60" rx="3" stroke="currentColor" strokeWidth="2" />
-                  <path d="M18 22L26 32L18 42" stroke="currentColor" strokeWidth="3" strokeLinecap="square" />
-                  <rect x="32" y="40" width="14" height="2.5" fill="currentColor" />
-                </svg>
-              </span>
-              <span className="brand-name">{t('app.title')}</span>
+              <BrandLogo />
             </a>
           ) : (
-            <>
-              <span className="brand-mark" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 64 64" fill="none">
-                  <rect x="2" y="2" width="60" height="60" rx="3" stroke="currentColor" strokeWidth="2" />
-                  <path d="M18 22L26 32L18 42" stroke="currentColor" strokeWidth="3" strokeLinecap="square" />
-                  <rect x="32" y="40" width="14" height="2.5" fill="currentColor" />
-                </svg>
-              </span>
-              <span className="brand-name">{t('app.title')}</span>
-            </>
+            <BrandLogo />
           )}
         </div>
         <div style={{ display: 'flex', gap: 2 }}>

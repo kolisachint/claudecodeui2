@@ -11,7 +11,7 @@ import { createNormalizedMessage, generateMessageId, readObjectRecord } from '@/
 const PROVIDER = 'hoocode';
 
 /**
- * Hoocode rollouts live under ~/.hoocode/agent/sessions/<slug>/<timestamp>_<id>.jsonl, but
+ * Hoocode rollouts live under ~/.hoocode/sessions/<slug>/<timestamp>_<id>.jsonl, but
  * the slug-encoded folder name is lossy (path separators collapse to `-`) and
  * cannot be reliably reversed to a real cwd. The synchronizer persists the
  * jsonl_path on the session row, so prefer that. Fall back to a directory scan
@@ -23,7 +23,7 @@ function findSessionFile(sessionId: string, projectPath: string): string | null 
     return indexed;
   }
 
-  const root = path.join(os.homedir(), '.hoocode', 'agent', 'sessions');
+  const root = path.join(os.homedir(), '.hoocode', 'sessions');
   if (!fs.existsSync(root)) return null;
 
   const cleanPath = (projectPath || '').replace(/[^\x20-\x7E]/g, '').trim();

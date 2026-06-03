@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { MessageSquare } from 'lucide-react';
+import BrandLogo from '../../../shared/view/ui/BrandLogo';
 
 import { IS_PLATFORM } from '../../../constants/config';
 
@@ -26,7 +26,7 @@ export default function AuthScreenLayout({
             <div className="mb-4 flex justify-center">
               {logo ?? (
                 <div className="brand-mark flex h-16 w-16 items-center justify-center rounded-lg bg-primary shadow-sm">
-                  <MessageSquare className="h-8 w-8 text-primary-foreground" />
+                  <BrandLogo className="h-8 w-8 text-primary-foreground" />
                 </div>
               )}
             </div>

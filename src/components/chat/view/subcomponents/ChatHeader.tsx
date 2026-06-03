@@ -118,7 +118,7 @@ const ChatHeader = memo(function ChatHeader({
           {tokenPercent !== null ? (
             <span className="chat-meta-tokens" title={t('header.tokenUsage', { defaultValue: 'Token usage' })}>
               <span className="chat-meta-id-label">tok</span>
-              <span className="chat-meta-id-value">{formatNumber(tokenUsed)} / {formatNumber(tokenTotal)} ({tokenPercent}%)</span>
+              <span className="chat-meta-id-value">{formatNumber(tokenUsed)} / {formatNumber(tokenTotal)}</span>
             </span>
           ) : null}
           {typeof totalMessages === 'number' ? (

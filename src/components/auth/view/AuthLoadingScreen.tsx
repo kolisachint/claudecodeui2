@@ -1,4 +1,4 @@
-import { MessageSquare } from 'lucide-react';
+import BrandLogo from '../../../shared/view/ui/BrandLogo';
 
 const loadingDotAnimationDelays = ['0s', '0.1s', '0.2s'];
 
@@ -8,7 +8,7 @@ export default function AuthLoadingScreen() {
       <div className="text-center">
         <div className="mb-4 flex justify-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-primary shadow-sm">
-            <MessageSquare className="h-8 w-8 text-primary-foreground" />
+            <BrandLogo className="h-8 w-8 text-primary-foreground" />
           </div>
         </div>
 

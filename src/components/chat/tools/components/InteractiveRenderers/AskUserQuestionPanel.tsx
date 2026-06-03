@@ -172,7 +172,7 @@ export const AskUserQuestionPanel: React.FC<PermissionPanelProps> = ({
 
             <div className="flex min-w-0 flex-1 items-center gap-2">
               <span className="text-[var(--fs-xs)] font-medium uppercase tracking-wide text-[var(--ink-4)]">
-                Claude needs your input
+                HooCode needs your input
               </span>
               {q.header && (
                 <span className="border-[var(--brand-accent)]/30 inline-flex items-center rounded border bg-[var(--brand-accent-soft)] px-1.5 py-px text-[var(--fs-xs)] font-semibold uppercase tracking-wider text-[var(--brand-accent)]">

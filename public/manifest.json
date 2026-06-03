@@ -1,7 +1,7 @@
 {
   "name": "HooCowork",
   "short_name": "HooCowork",
-  "description": "A web-based UI for Claude Code, Cursor CLI, Codex, and Gemini-CLI",
+  "description": "A web-based UI for HooCode, Claude Code, and GitHub Copilot",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FAFAF7",

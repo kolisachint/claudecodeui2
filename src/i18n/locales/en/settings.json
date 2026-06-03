@@ -275,7 +275,7 @@
     "apiDocsLink": "API Documentation",
     "documentation": {
       "title": "External API Documentation",
-      "description": "Learn how to use the external API to trigger Claude/Cursor sessions from your applications.",
+      "description": "Learn how to use the external API to trigger HooCode/Cursor sessions from your applications.",
       "viewLink": "View API Documentation →"
     },
     "loading": "Loading...",
@@ -331,9 +331,9 @@
         "description": "Google Gemini AI assistant"
       },
       "hoocode": {
-        "description": "Pi coding agent",
+        "description": "HooCode coding agent",
         "configuredViaKeys": "Authenticated via API keys configured on the server",
-        "manageKeysHint": "Manage Pi credentials in API & Tokens"
+        "manageKeysHint": "Manage HooCode credentials in API & Tokens"
       }
     },
     "connectionStatus": "Connection Status",
@@ -453,7 +453,8 @@
     "description": {
       "claude": "Model Context Protocol servers provide additional tools and data sources to Claude",
       "cursor": "Model Context Protocol servers provide additional tools and data sources to Cursor",
-      "codex": "Model Context Protocol servers provide additional tools and data sources to Codex"
+      "codex": "Model Context Protocol servers provide additional tools and data sources to Codex",
+      "hoocode": "Model Context Protocol servers provide additional tools and data sources to HooCode"
     },
     "addButton": "Add MCP Server",
     "empty": "No MCP servers configured",

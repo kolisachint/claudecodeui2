@@ -15,7 +15,7 @@ import type { AnyRecord } from '@/shared/types.js';
 const PI_UNTITLED = 'Untitled Hoocode Session';
 
 function getPiSessionsRoot(): string {
-  return path.join(os.homedir(), '.hoocode', 'agent', 'sessions');
+  return path.join(os.homedir(), '.hoocode', 'sessions');
 }
 
 type ParsedPiSession = {

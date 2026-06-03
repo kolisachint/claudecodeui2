@@ -33,7 +33,7 @@
     "add": "Add",
     "addGlobalTitle": "Add Global MCP Server",
     "addGlobal": "Add Global",
-    "globalDescription": "Adds this MCP server to every provider: Claude, Cursor, Codex, and Gemini. Only stdio and http transports are supported because the same config must work across all providers."
+    "globalDescription": "Adds this MCP server to every provider: HooCode, Claude, Cursor, Codex, and Gemini. Only stdio and http transports are supported because the same config must work across all providers."
   },
   "status": {
     "running": "running",

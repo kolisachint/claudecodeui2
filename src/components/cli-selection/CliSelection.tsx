@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import SessionProviderLogo from '../../components/llm-logo-provider/SessionProviderLogo';
 import { DEFAULT_PROVIDER, VISIBLE_PROVIDERS, VISIBLE_PROVIDER_IDS } from '../../providers/provider-registry';
 import type { LLMProvider } from '../../types/app';
 
@@ -86,7 +87,7 @@ export default function CliSelection({ onPick, onSkip }: CliSelectionProps) {
             className={`cli-card ${picked === cli.id ? 'picked' : ''}`}
             onClick={() => setPicked(cli.id)}
           >
-            <div className="cli-glyph">{cli.glyph}</div>
+            <div className="cli-glyph"><SessionProviderLogo provider={cli.id} className="h-8 w-8" /></div>
             <div className="cli-name">{cli.name}</div>
             <div className="cli-vendor">{cli.vendor}</div>
             <div className="cli-desc">{cli.desc}</div>
