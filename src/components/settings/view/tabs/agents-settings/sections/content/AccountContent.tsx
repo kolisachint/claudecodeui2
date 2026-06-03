@@ -17,6 +17,7 @@ const AGENT_NAMES: Record<AgentProvider, string> = {
   gemini: 'Gemini',
   hoocode: 'Hoocode',
   opencode: 'OpenCode',
+  githubcopilot: 'GitHub Copilot',
 };
 
 export default function AccountContent({ agent, authStatus, onLogin }: AccountContentProps) {

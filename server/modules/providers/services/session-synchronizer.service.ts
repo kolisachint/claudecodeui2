@@ -24,6 +24,7 @@ export const sessionSynchronizerService = {
       gemini: 0,
       hoocode: 0,
       opencode: 0,
+      githubcopilot: 0,
     };
     const failures: string[] = [];
 

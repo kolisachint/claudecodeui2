@@ -14,7 +14,7 @@ type SessionSummary = {
   lastActivity: string;
 };
 
-type SessionsByProvider = Record<'claude' | 'cursor' | 'codex' | 'gemini' | 'hoocode' | 'opencode', SessionSummary[]>;
+type SessionsByProvider = Record<'claude' | 'cursor' | 'codex' | 'gemini' | 'hoocode' | 'opencode' | 'githubcopilot', SessionSummary[]>;
 
 type SessionRepositoryRow = {
   provider: string;
@@ -36,6 +36,7 @@ export type ProjectListItem = {
   geminiSessions: SessionSummary[];
   hoocodeSessions: SessionSummary[];
   openCodeSessions: SessionSummary[];
+  githubcopilotSessions: SessionSummary[];
   sessionMeta: {
     hasMore: boolean;
     total: number;
@@ -74,6 +75,7 @@ export type ProjectSessionsPageApiView = {
   geminiSessions: SessionSummary[];
   hoocodeSessions: SessionSummary[];
   openCodeSessions: SessionSummary[];
+  githubcopilotSessions: SessionSummary[];
   sessionMeta: {
     hasMore: boolean;
     total: number;
@@ -141,6 +143,7 @@ function bucketSessionRowsByProvider(rows: SessionRepositoryRow[]): SessionsByPr
     gemini: [],
     hoocode: [],
     opencode: [],
+    githubcopilot: [],
   };
 
   for (const row of rows) {
@@ -247,6 +250,7 @@ export async function getProjectsWithSessions(
       geminiSessions: sessionsPage.sessionsByProvider.gemini,
       hoocodeSessions: sessionsPage.sessionsByProvider.hoocode,
       openCodeSessions: sessionsPage.sessionsByProvider.opencode,
+      githubcopilotSessions: sessionsPage.sessionsByProvider.githubcopilot,
       sessionMeta: {
         hasMore: sessionsPage.hasMore,
         total: sessionsPage.total,
@@ -287,6 +291,7 @@ export async function getProjectSessionsPage(
     geminiSessions: sessionsPage.sessionsByProvider.gemini,
     hoocodeSessions: sessionsPage.sessionsByProvider.hoocode,
     openCodeSessions: sessionsPage.sessionsByProvider.opencode,
+    githubcopilotSessions: sessionsPage.sessionsByProvider.githubcopilot,
     sessionMeta: {
       hasMore: sessionsPage.hasMore,
       total: sessionsPage.total,

@@ -1,4 +1,4 @@
-export type LLMProvider = 'claude' | 'cursor' | 'codex' | 'gemini' | 'hoocode' | 'opencode';
+export type LLMProvider = 'claude' | 'cursor' | 'codex' | 'gemini' | 'hoocode' | 'opencode' | 'githubcopilot';
 
 export type AppTab = 'chat' | 'files' | 'shell' | 'git' | 'tasks' | 'preview' | 'cli' | 'settings' | `plugin:${string}`;
 
@@ -55,6 +55,7 @@ export interface Project {
   geminiSessions?: ProjectSession[];
   hoocodeSessions?: ProjectSession[];
   openCodeSessions?: ProjectSession[];
+  githubcopilotSessions?: ProjectSession[];
   sessionMeta?: ProjectSessionMeta;
   taskmaster?: ProjectTaskmasterInfo;
   [key: string]: unknown;

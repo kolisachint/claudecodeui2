@@ -14,7 +14,8 @@ import {
   GEMINI_MODELS,
   OPENCODE_MODELS,
   HOOCODE_MODELS,
-  PROVIDERS,
+  COPILOT_MODELS,
+  getVisibleProviders,
 } from "../../../../../shared/modelConstants";
 import type { ProjectSession, LLMProvider } from "../../../../types/app";
 import { NextTaskBanner } from "../../../task-master";
@@ -53,6 +54,8 @@ type ProviderSelectionEmptyStateProps = {
   setHoocodeModel: (model: string) => void;
   openCodeModel: string;
   setOpenCodeModel: (model: string) => void;
+  githubcopilotModel: string;
+  setGithubcopilotModel: (model: string) => void;
   tasksEnabled: boolean;
   isTaskMasterInstalled: boolean | null;
   onShowAllTasks?: (() => void) | null;
@@ -65,7 +68,9 @@ type ProviderGroup = {
   models: { value: string; label: string }[];
 };
 
-const PROVIDER_GROUPS: ProviderGroup[] = PROVIDERS.map((p) => ({
+// New-session selection only offers visible (non-retired) providers. Retired
+// providers still render in existing sessions via SessionProviderLogo etc.
+const PROVIDER_GROUPS: ProviderGroup[] = getVisibleProviders().map((p) => ({
   id: p.id as LLMProvider,
   name: p.name,
   models: p.models.OPTIONS,
@@ -77,6 +82,7 @@ function getModelConfig(p: LLMProvider) {
   if (p === "gemini") return GEMINI_MODELS;
   if (p === "hoocode") return HOOCODE_MODELS;
   if (p === "opencode") return OPENCODE_MODELS;
+  if (p === "githubcopilot") return COPILOT_MODELS;
   return CURSOR_MODELS;
 }
 
@@ -88,12 +94,14 @@ function getCurrentModel(
   g: string,
   hoocode: string,
   oc: string,
+  copilot: string,
 ) {
   if (p === "claude") return c;
   if (p === "codex") return co;
   if (p === "gemini") return g;
   if (p === "hoocode") return hoocode;
   if (p === "opencode") return oc;
+  if (p === "githubcopilot") return copilot;
   return cu;
 }
 
@@ -103,6 +111,7 @@ function getProviderDisplayName(p: LLMProvider) {
   if (p === "codex") return "Codex";
   if (p === "hoocode") return "Hoocode";
   if (p === "opencode") return "OpenCode";
+  if (p === "githubcopilot") return "GitHub Copilot";
   return "Gemini";
 }
 
@@ -124,6 +133,8 @@ export default function ProviderSelectionEmptyState({
   setHoocodeModel,
   openCodeModel,
   setOpenCodeModel,
+  githubcopilotModel,
+  setGithubcopilotModel,
   tasksEnabled,
   isTaskMasterInstalled,
   onShowAllTasks,
@@ -194,6 +205,7 @@ export default function ProviderSelectionEmptyState({
     geminiModel,
     hoocodeModel,
     openCodeModel,
+    githubcopilotModel,
   );
 
   const currentModelLabel = useMemo(() => {
@@ -221,12 +233,15 @@ export default function ProviderSelectionEmptyState({
       } else if (providerId === "opencode") {
         setOpenCodeModel(modelValue);
         localStorage.setItem("opencode-model", modelValue);
+      } else if (providerId === "githubcopilot") {
+        setGithubcopilotModel(modelValue);
+        localStorage.setItem("githubcopilot-model", modelValue);
       } else {
         setCursorModel(modelValue);
         localStorage.setItem("cursor-model", modelValue);
       }
     },
-    [setClaudeModel, setCursorModel, setCodexModel, setGeminiModel, setHoocodeModel, setOpenCodeModel],
+    [setClaudeModel, setCursorModel, setCodexModel, setGeminiModel, setHoocodeModel, setOpenCodeModel, setGithubcopilotModel],
   );
 
   const handleModelSelect = useCallback(
@@ -377,6 +392,10 @@ export default function ProviderSelectionEmptyState({
                 opencode: t("providerSelection.readyPrompt.opencode", {
                   model: openCodeModel,
                   defaultValue: `Ready to chat with OpenCode (${openCodeModel})`,
+                }),
+                githubcopilot: t("providerSelection.readyPrompt.githubcopilot", {
+                  model: githubcopilotModel,
+                  defaultValue: `Ready to chat with GitHub Copilot (${githubcopilotModel})`,
                 }),
               }[provider]
             }

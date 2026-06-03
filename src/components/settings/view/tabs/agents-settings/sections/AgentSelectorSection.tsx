@@ -8,6 +8,7 @@ const AGENT_NAMES: Record<AgentProvider, string> = {
   gemini: 'Gemini CLI',
   hoocode: 'Hoocode',
   opencode: 'OpenCode',
+  githubcopilot: 'GitHub Copilot',
 };
 
 const AGENT_GLYPHS: Record<AgentProvider, string> = {
@@ -17,6 +18,7 @@ const AGENT_GLYPHS: Record<AgentProvider, string> = {
   gemini: '△',
   hoocode: '●',
   opencode: '◎',
+  githubcopilot: '⌘',
 };
 
 export default function AgentSelectorSection({

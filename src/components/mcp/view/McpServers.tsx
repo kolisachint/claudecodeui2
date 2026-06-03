@@ -52,6 +52,7 @@ const CONFIG_PATHS: Record<McpProvider, string> = {
   gemini: '~/.gemini/mcp.json',
   hoocode: '~/.hoocode/mcp.json',
   opencode: '~/.opencode/mcp.json',
+  githubcopilot: '~/.copilot/mcp-config.json',
 };
 
 const getScopeLabel = (scope: McpScope): string => scope;

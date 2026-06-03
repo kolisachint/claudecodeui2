@@ -20,6 +20,7 @@ import {
   GEMINI_MODELS,
   HOOCODE_MODELS,
   OPENCODE_MODELS,
+  COPILOT_MODELS,
 } from '../../../../shared/modelConstants';
 
 import ChatMessagesPane from './subcomponents/ChatMessagesPane';
@@ -97,6 +98,8 @@ function ChatInterface({
     setHoocodeModel,
     openCodeModel,
     setOpenCodeModel,
+    githubcopilotModel,
+    setGithubcopilotModel,
     permissionMode,
     pendingPermissionRequests,
     setPendingPermissionRequests,
@@ -209,6 +212,7 @@ function ChatInterface({
     geminiModel,
     hoocodeModel,
     openCodeModel,
+    githubcopilotModel,
     isLoading,
     canAbortSession,
     tokenBudget,
@@ -315,10 +319,11 @@ function ChatInterface({
       case 'gemini': return geminiModel;
       case 'hoocode': return hoocodeModel;
       case 'opencode': return openCodeModel;
+      case 'githubcopilot': return githubcopilotModel;
       case 'claude':
       default: return claudeModel;
     }
-  }, [provider, claudeModel, cursorModel, codexModel, geminiModel, hoocodeModel, openCodeModel]);
+  }, [provider, claudeModel, cursorModel, codexModel, geminiModel, hoocodeModel, openCodeModel, githubcopilotModel]);
 
   const modelOptions = useMemo(() => {
     switch (provider) {
@@ -332,6 +337,7 @@ function ChatInterface({
           ? hoocodeModelsList.map(({ value, label }) => ({ value, label }))
           : HOOCODE_MODELS.OPTIONS;
       case 'opencode': return OPENCODE_MODELS.OPTIONS;
+      case 'githubcopilot': return COPILOT_MODELS.OPTIONS;
       case 'claude':
       default: return CLAUDE_MODELS.OPTIONS;
     }
@@ -344,10 +350,11 @@ function ChatInterface({
       case 'gemini': setGeminiModel(value); localStorage.setItem('gemini-model', value); break;
       case 'hoocode': setHoocodeModel(value); localStorage.setItem('hoocode-model', value); break;
       case 'opencode': setOpenCodeModel(value); localStorage.setItem('opencode-model', value); break;
+      case 'githubcopilot': setGithubcopilotModel(value); localStorage.setItem('githubcopilot-model', value); break;
       case 'claude':
       default: setClaudeModel(value); localStorage.setItem('claude-model', value); break;
     }
-  }, [provider, setClaudeModel, setCursorModel, setCodexModel, setGeminiModel, setHoocodeModel, setOpenCodeModel]);
+  }, [provider, setClaudeModel, setCursorModel, setCodexModel, setGeminiModel, setHoocodeModel, setOpenCodeModel, setGithubcopilotModel]);
 
   if (!selectedProject) {
     const selectedProviderLabel =

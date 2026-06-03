@@ -160,13 +160,94 @@ export const OPENCODE_MODELS = {
 };
 
 /**
- * Ordered provider registry. Display order in selection UIs.
+ * GitHub Copilot CLI Models
+ *
+ * The Copilot CLI (`@github/copilot`, binary `copilot`) selects a model with
+ * `--model <id>`. Values mirror the strings shown by `copilot help`; the
+ * default (no `--model`) is Claude Sonnet 4.5. Auth is via a GitHub token
+ * (COPILOT_GITHUB_TOKEN / GH_TOKEN / GITHUB_TOKEN) or `gh auth`.
+ */
+export const COPILOT_MODELS = {
+  OPTIONS: [
+    { value: "claude-sonnet-4.5", label: "Claude Sonnet 4.5" },
+    { value: "claude-opus-4.5", label: "Claude Opus 4.5 (Preview)" },
+    { value: "claude-haiku-4.5", label: "Claude Haiku 4.5" },
+    { value: "claude-sonnet-4", label: "Claude Sonnet 4" },
+    { value: "gpt-5.1", label: "GPT-5.1" },
+    { value: "gpt-5.1-codex", label: "GPT-5.1 Codex" },
+    { value: "gpt-5.1-codex-mini", label: "GPT-5.1 Codex Mini" },
+    { value: "gpt-5", label: "GPT-5" },
+    { value: "gpt-5-mini", label: "GPT-5 mini" },
+    { value: "gpt-4.1", label: "GPT-4.1" },
+    { value: "gemini-3-pro", label: "Gemini 3 Pro (Preview)" },
+  ],
+
+  DEFAULT: "claude-sonnet-4.5",
+};
+
+/**
+ *
+ * This is the single source of truth for which CLI integrations the product
+ * leads with. It lets us promote/retire providers from one place instead of
+ * editing the registry, type unions, UI lists and i18n separately.
+ *
+ * - "first":  Primary, featured integration. Highlighted in the UI.
+ * - "second": Supported, secondary integration.
+ * - "hidden": Retired. Not offered for NEW sessions (hidden from pickers), but
+ *             the backend can still read/sync existing sessions so history is
+ *             never lost. Flip to "second"/"first" to bring it back instantly.
+ *
+ * @typedef {"first" | "second" | "hidden"} ProviderTier
+ */
+
+/**
+ * Ordered provider registry — the single source of truth for the supported
+ * provider list, their display order, vendor names, model catalogs and tier.
+ *
+ * To promote, demote or retire a provider, change its `tier` here. Downstream
+ * consumers (server registry, selection UIs) read tier from this list rather
+ * than hardcoding the provider set.
  */
 export const PROVIDERS = [
-  { id: "claude", name: "Anthropic", models: CLAUDE_MODELS },
-  { id: "codex", name: "OpenAI", models: CODEX_MODELS },
-  { id: "gemini", name: "Google", models: GEMINI_MODELS },
-  { id: "cursor", name: "Cursor", models: CURSOR_MODELS },
-  { id: "hoocode", name: "Hoocode", models: HOOCODE_MODELS },
-  { id: "opencode", name: "OpenCode", models: OPENCODE_MODELS },
+  { id: "hoocode", name: "Hoocode", models: HOOCODE_MODELS, tier: "first" },
+  { id: "claude", name: "Anthropic", models: CLAUDE_MODELS, tier: "second" },
+  { id: "githubcopilot", name: "GitHub Copilot", models: COPILOT_MODELS, tier: "second" },
+  { id: "codex", name: "OpenAI", models: CODEX_MODELS, tier: "hidden" },
+  { id: "gemini", name: "Google", models: GEMINI_MODELS, tier: "hidden" },
+  { id: "cursor", name: "Cursor", models: CURSOR_MODELS, tier: "hidden" },
+  { id: "opencode", name: "OpenCode", models: OPENCODE_MODELS, tier: "hidden" },
 ];
+
+/** All provider ids, in display order. */
+export const PROVIDER_IDS = PROVIDERS.map((p) => p.id);
+
+/** Look up a single provider descriptor by id. */
+export function getProviderById(id) {
+  return PROVIDERS.find((p) => p.id === id);
+}
+
+/** Resolve a provider's tier, defaulting to "hidden" for unknown ids. */
+export function getProviderTier(id) {
+  return getProviderById(id)?.tier ?? "hidden";
+}
+
+/** Providers matching a given tier, in display order. */
+export function getProvidersByTier(tier) {
+  return PROVIDERS.filter((p) => p.tier === tier);
+}
+
+/**
+ * Providers offered for NEW sessions (everything not retired), in display
+ * order: "first" tier first, then "second". Use this for selection/picker UIs.
+ */
+export function getVisibleProviders() {
+  const order = { first: 0, second: 1, hidden: 2 };
+  return PROVIDERS.filter((p) => p.tier !== "hidden").sort(
+    (a, b) => order[a.tier] - order[b.tier],
+  );
+}
+
+/** Whether a provider is offered for new sessions (not retired). */
+export function isProviderVisible(id) {
+  return getProviderTier(id) !== "hidden";
+}

@@ -10,6 +10,7 @@ import {
   Plug,
 } from 'lucide-react';
 
+import { ALL_PROVIDER_IDS, VISIBLE_PROVIDER_IDS } from '../../../providers/provider-registry';
 import type {
   AgentCategory,
   AgentProvider,
@@ -37,7 +38,10 @@ export const SETTINGS_MAIN_TABS: SettingsMainTabMeta[] = [
   { id: 'about', label: 'About', keywords: 'about version info', icon: Info },
 ];
 
-export const AGENT_PROVIDERS: AgentProvider[] = ['claude', 'cursor', 'codex', 'gemini', 'hoocode', 'opencode'];
+// All agents (incl. retired) and the visible subset both derive from the
+// provider registry so there is no separate hardcoded list to keep in sync.
+export const AGENT_PROVIDERS: AgentProvider[] = ALL_PROVIDER_IDS as AgentProvider[];
+export const VISIBLE_AGENT_PROVIDERS: AgentProvider[] = VISIBLE_PROVIDER_IDS as AgentProvider[];
 export const AGENT_CATEGORIES: AgentCategory[] = ['account', 'permissions', 'tools', 'models'];
 
 export const DEFAULT_PROJECT_SORT_ORDER: ProjectSortOrder = 'name';

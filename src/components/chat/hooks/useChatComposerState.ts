@@ -45,6 +45,7 @@ interface UseChatComposerStateArgs {
   geminiModel: string;
   hoocodeModel: string;
   openCodeModel: string;
+  githubcopilotModel: string;
   isLoading: boolean;
   canAbortSession: boolean;
   tokenBudget: Record<string, unknown> | null;
@@ -119,6 +120,7 @@ export function useChatComposerState({
   geminiModel,
   hoocodeModel,
   openCodeModel,
+  githubcopilotModel,
   isLoading,
   canAbortSession,
   tokenBudget,
@@ -292,7 +294,7 @@ export function useChatComposerState({
           projectId: selectedProject.projectId,
           sessionId: currentSessionId,
           provider,
-          model: provider === 'cursor' ? cursorModel : provider === 'codex' ? codexModel : provider === 'gemini' ? geminiModel : provider === 'hoocode' ? hoocodeModel : provider === 'opencode' ? openCodeModel : claudeModel,
+          model: provider === 'cursor' ? cursorModel : provider === 'codex' ? codexModel : provider === 'gemini' ? geminiModel : provider === 'hoocode' ? hoocodeModel : provider === 'opencode' ? openCodeModel : provider === 'githubcopilot' ? githubcopilotModel : claudeModel,
           tokenUsage: tokenBudget,
         };
 
@@ -674,6 +676,19 @@ export function useChatComposerState({
             sessionId: effectiveSessionId,
             resume: Boolean(effectiveSessionId),
             model: openCodeModel,
+            sessionSummary,
+          },
+        });
+      } else if (provider === 'githubcopilot') {
+        sendMessage({
+          type: 'githubcopilot-command',
+          command: messageContent,
+          options: {
+            projectPath: resolvedProjectPath,
+            cwd: resolvedProjectPath,
+            sessionId: effectiveSessionId,
+            resume: Boolean(effectiveSessionId),
+            model: githubcopilotModel,
             sessionSummary,
           },
         });

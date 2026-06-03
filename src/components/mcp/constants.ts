@@ -7,6 +7,7 @@ export const MCP_PROVIDER_NAMES: Record<McpProvider, string> = {
   gemini: 'Gemini',
   hoocode: 'Hoocode',
   opencode: 'OpenCode',
+  githubcopilot: 'GitHub Copilot',
 };
 
 export const MCP_SUPPORTED_SCOPES: Record<McpProvider, McpScope[]> = {
@@ -16,6 +17,7 @@ export const MCP_SUPPORTED_SCOPES: Record<McpProvider, McpScope[]> = {
   gemini: ['user', 'project'],
   hoocode: ['user'],
   opencode: ['user'],
+  githubcopilot: ['user'],
 };
 
 export const MCP_SUPPORTED_TRANSPORTS: Record<McpProvider, McpTransport[]> = {
@@ -25,6 +27,7 @@ export const MCP_SUPPORTED_TRANSPORTS: Record<McpProvider, McpTransport[]> = {
   gemini: ['stdio', 'http', 'sse'],
   hoocode: ['stdio', 'http'],
   opencode: ['stdio', 'http'],
+  githubcopilot: ['stdio', 'http'],
 };
 
 export const MCP_GLOBAL_SUPPORTED_SCOPES: McpScope[] = ['user', 'project'];
@@ -38,6 +41,7 @@ export const MCP_PROVIDER_BUTTON_CLASSES: Record<McpProvider, string> = {
   gemini: 'bg-[var(--brand-accent)] text-[var(--brand-accent-ink)] hover:opacity-90',
   hoocode: 'bg-[var(--ok)] text-[var(--paper)] hover:opacity-90',
   opencode: 'bg-[var(--warn)] text-[var(--paper)] hover:opacity-90',
+  githubcopilot: 'bg-[var(--ink)] text-[var(--paper)] hover:opacity-90',
 };
 
 export const MCP_SUPPORTS_WORKING_DIRECTORY: Record<McpProvider, boolean> = {
@@ -47,6 +51,7 @@ export const MCP_SUPPORTS_WORKING_DIRECTORY: Record<McpProvider, boolean> = {
   gemini: true,
   hoocode: false,
   opencode: false,
+  githubcopilot: false,
 };
 
 export const DEFAULT_MCP_FORM: McpFormState = {

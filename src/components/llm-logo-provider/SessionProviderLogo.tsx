@@ -1,11 +1,5 @@
+import { getProviderLogo } from '../../providers/provider-registry';
 import type { LLMProvider } from '../../types/app';
-
-import ClaudeLogo from './ClaudeLogo';
-import CodexLogo from './CodexLogo';
-import CursorLogo from './CursorLogo';
-import GeminiLogo from './GeminiLogo';
-import OpenCodeLogo from './OpenCodeLogo';
-import HoocodeLogo from './HoocodeLogo';
 
 type SessionProviderLogoProps = {
   provider?: LLMProvider | string | null;
@@ -16,25 +10,9 @@ export default function SessionProviderLogo({
   provider = 'claude',
   className = 'w-5 h-5',
 }: SessionProviderLogoProps) {
-  if (provider === 'cursor') {
-    return <CursorLogo className={className} />;
-  }
-
-  if (provider === 'codex') {
-    return <CodexLogo className={className} />;
-  }
-
-  if (provider === 'gemini') {
-    return <GeminiLogo className={className} />;
-  }
-
-  if (provider === 'hoocode') {
-    return <HoocodeLogo className={className} />;
-  }
-
-  if (provider === 'opencode') {
-    return <OpenCodeLogo className={className} />;
-  }
-
-  return <ClaudeLogo className={className} />;
+  // Logo dispatch is driven by the provider registry so adding a CLI is a single
+  // registry entry rather than another branch here. Unknown/retired ids fall
+  // back to the Claude mark.
+  const Logo = getProviderLogo(provider);
+  return <Logo className={className} />;
 }

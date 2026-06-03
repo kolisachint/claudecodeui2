@@ -13,6 +13,7 @@ import { spawnCursor } from '../cursor-cli.js';
 import { queryCodex } from '../openai-codex.js';
 import { spawnGemini } from '../gemini-cli.js';
 import { spawnOpenCode } from '../opencode-cli.js';
+import { spawnCopilot } from '../copilot-cli.js';
 import { CODEX_MODELS } from '../../shared/modelConstants.js';
 import { IS_PLATFORM } from '../constants/config.js';
 import { normalizeProjectPath } from '../shared/utils.js';
@@ -862,8 +863,8 @@ router.post('/', validateExternalApiKey, async (req, res) => {
     return res.status(400).json({ error: 'message is required' });
   }
 
-  if (!['claude', 'cursor', 'codex', 'gemini', 'hoocode', 'opencode'].includes(provider)) {
-    return res.status(400).json({ error: 'provider must be "claude", "cursor", "codex", "gemini", "hoocode", or "opencode"' });
+  if (!['claude', 'cursor', 'codex', 'gemini', 'hoocode', 'opencode', 'githubcopilot'].includes(provider)) {
+    return res.status(400).json({ error: 'provider must be "claude", "cursor", "codex", "gemini", "hoocode", "opencode", or "githubcopilot"' });
   }
 
   // Validate GitHub branch/PR creation requirements
@@ -987,6 +988,15 @@ router.post('/', validateExternalApiKey, async (req, res) => {
       console.log('🟡 Starting OpenCode CLI session');
 
       await spawnOpenCode(message.trim(), {
+        projectPath: finalProjectPath,
+        cwd: finalProjectPath,
+        sessionId: sessionId || null,
+        model: model || undefined,
+      }, writer);
+    } else if (provider === 'githubcopilot') {
+      console.log('🟡 Starting GitHub Copilot CLI session');
+
+      await spawnCopilot(message.trim(), {
         projectPath: finalProjectPath,
         cwd: finalProjectPath,
         sessionId: sessionId || null,

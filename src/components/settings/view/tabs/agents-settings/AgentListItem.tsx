@@ -40,6 +40,10 @@ const agentConfig: Record<AgentProvider, AgentConfig> = {
     name: 'OpenCode',
     color: 'amber',
   },
+  githubcopilot: {
+    name: 'Copilot',
+    color: 'indigo',
+  },
 };
 
 const colorClasses = {

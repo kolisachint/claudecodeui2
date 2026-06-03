@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { authenticatedFetch } from '../../../utils/api';
-import { CLAUDE_MODELS, CODEX_MODELS, CURSOR_MODELS, GEMINI_MODELS, OPENCODE_MODELS, HOOCODE_MODELS } from '../../../../shared/modelConstants';
+import { CLAUDE_MODELS, CODEX_MODELS, CURSOR_MODELS, GEMINI_MODELS, OPENCODE_MODELS, HOOCODE_MODELS, COPILOT_MODELS } from '../../../../shared/modelConstants';
 import type { PendingPermissionRequest, PermissionMode } from '../types/types';
 import type { ProjectSession, LLMProvider } from '../../../types/app';
 
@@ -53,6 +53,9 @@ export function useChatProviderState({ selectedSession, hoocodeModes }: UseChatP
   const [openCodeModel, setOpenCodeModel] = useState<string>(() => {
     return localStorage.getItem('opencode-model') || OPENCODE_MODELS.DEFAULT;
   });
+  const [githubcopilotModel, setGithubcopilotModel] = useState<string>(() => {
+    return localStorage.getItem('githubcopilot-model') || COPILOT_MODELS.DEFAULT;
+  });
 
   const lastProviderRef = useRef(provider);
 
@@ -83,6 +86,7 @@ export function useChatProviderState({ selectedSession, hoocodeModes }: UseChatP
       else if (selectedSession.__provider === 'gemini') setGeminiModel(stored);
       else if (selectedSession.__provider === 'hoocode') setHoocodeModel(stored);
       else if (selectedSession.__provider === 'opencode') setOpenCodeModel(stored);
+      else if (selectedSession.__provider === 'githubcopilot') setGithubcopilotModel(stored);
     }
   }, [provider, selectedSession]);
 
@@ -101,6 +105,7 @@ export function useChatProviderState({ selectedSession, hoocodeModes }: UseChatP
       else if (nextProvider === 'gemini') setGeminiModel(stored);
       else if (nextProvider === 'hoocode') setHoocodeModel(stored);
       else if (nextProvider === 'opencode') setOpenCodeModel(stored);
+      else if (nextProvider === 'githubcopilot') setGithubcopilotModel(stored);
     };
 
     const handleProviderChanged = (event: Event) => {
@@ -186,6 +191,8 @@ export function useChatProviderState({ selectedSession, hoocodeModes }: UseChatP
     setHoocodeModel,
     openCodeModel,
     setOpenCodeModel,
+    githubcopilotModel,
+    setGithubcopilotModel,
     permissionMode,
     setPermissionMode,
     pendingPermissionRequests,

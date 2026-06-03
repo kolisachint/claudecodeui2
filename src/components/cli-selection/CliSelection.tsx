@@ -1,24 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { DEFAULT_PROVIDER, VISIBLE_PROVIDERS, VISIBLE_PROVIDER_IDS } from '../../providers/provider-registry';
 import type { LLMProvider } from '../../types/app';
 
-type CliOption = {
-  id: LLMProvider;
-  name: string;
-  vendor: string;
-  glyph: string;
-  desc: string;
-};
-
-const CLI_OPTIONS: CliOption[] = [
-  { id: 'claude',  name: 'Claude Code',  vendor: 'Anthropic', glyph: '◆', desc: "Anthropic's official CLI for coding agents." },
-  { id: 'cursor',  name: 'Cursor CLI',   vendor: 'Cursor',    glyph: '◇', desc: "Cursor's command-line interface." },
-  { id: 'codex',   name: 'Codex',        vendor: 'OpenAI',    glyph: '○', desc: "OpenAI's Codex CLI." },
-  { id: 'gemini',  name: 'Gemini CLI',   vendor: 'Google',    glyph: '△', desc: "Google's Gemini command-line interface." },
-  { id: 'hoocode', name: 'HooCode', vendor: 'HooCowork', glyph: '▽', desc: "HooCowork's own coding agent." },
-  { id: 'opencode', name: 'OpenCode',    vendor: 'OpenCode',  glyph: '□', desc: "OpenCode's command-line coding agent." },
-];
+// Selectable CLIs are the visible (non-retired) providers, in registry order.
+const CLI_OPTIONS = VISIBLE_PROVIDERS.map((descriptor) => ({
+  id: descriptor.id,
+  name: descriptor.displayName,
+  vendor: descriptor.vendor,
+  glyph: descriptor.glyph,
+  desc: descriptor.description,
+}));
 
 type CliSelectionProps = {
   /** Called when user continues with a provider. Defaults to setting localStorage + navigating to chat. */
@@ -27,23 +20,16 @@ type CliSelectionProps = {
   onSkip?: () => void;
 };
 
-const VALID_PROVIDERS: ReadonlyArray<LLMProvider> = [
-  'claude',
-  'cursor',
-  'codex',
-  'gemini',
-  'hoocode',
-  'opencode',
-];
-
 const readPersistedProvider = (): LLMProvider => {
   try {
     const stored = localStorage.getItem('selected-provider') as LLMProvider | null;
-    if (stored && VALID_PROVIDERS.includes(stored)) return stored;
+    // Only honor a persisted choice that is still offered; a previously selected
+    // but now-retired provider falls back to the default (first-class) one.
+    if (stored && VISIBLE_PROVIDER_IDS.includes(stored)) return stored;
   } catch {
     // localStorage unavailable
   }
-  return 'claude';
+  return DEFAULT_PROVIDER;
 };
 
 export default function CliSelection({ onPick, onSkip }: CliSelectionProps) {
@@ -72,7 +58,7 @@ export default function CliSelection({ onPick, onSkip }: CliSelectionProps) {
     }
 
     try {
-      localStorage.setItem('selected-provider', 'claude');
+      localStorage.setItem('selected-provider', DEFAULT_PROVIDER);
     } catch {
       // Silently ignore — localStorage may be unavailable
     }

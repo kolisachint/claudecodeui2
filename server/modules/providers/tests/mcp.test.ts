@@ -255,9 +255,11 @@ test('providerMcpService global adder writes to all providers and rejects unsupp
     });
 
     const expectCursorGlobal = process.platform !== 'win32';
-    assert.equal(globalResult.length, expectCursorGlobal ? 6 : 5);
+    assert.equal(globalResult.length, expectCursorGlobal ? 7 : 6);
 
-    // claude, codex, cursor, gemini support MCP; pi, opencode do not (yet)
+    // claude, codex, cursor, gemini support project-scope MCP; hoocode, opencode
+    // and githubcopilot are user-scope-only, so they appear in the result but
+    // are not created at project scope.
     const expectedCreatedCount = expectCursorGlobal ? 4 : 3;
     const createdCount = globalResult.filter((entry) => entry.created).length;
     assert.equal(createdCount, expectedCreatedCount);

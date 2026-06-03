@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { useServerPlatform } from '../../../../../hooks/useServerPlatform';
+import { VISIBLE_PROVIDER_IDS } from '../../../../../providers/provider-registry';
 import type { AgentCategory, AgentProvider } from '../../../types/types';
 
 import type { AgentContext, AgentsSettingsTabProps } from './types';
@@ -27,7 +28,9 @@ export default function AgentsSettingsTab({
   const { isWindowsServer } = useServerPlatform();
 
   const visibleAgents = useMemo<AgentProvider[]>(() => {
-    const all: AgentProvider[] = ['claude', 'cursor', 'codex', 'gemini', 'hoocode', 'opencode'];
+    // Only offer settings for providers currently surfaced (non-retired); tiering
+    // lives in the provider registry / shared config.
+    const all = VISIBLE_PROVIDER_IDS as AgentProvider[];
     if (isWindowsServer) {
       return all.filter((id) => id !== 'cursor');
     }
@@ -77,6 +80,10 @@ export default function AgentsSettingsTab({
       authStatus: providerAuthStatus.opencode,
       onLogin: () => onProviderLogin('opencode'),
     },
+    githubcopilot: {
+      authStatus: providerAuthStatus.githubcopilot,
+      onLogin: () => onProviderLogin('githubcopilot'),
+    },
   }), [
     onProviderLogin,
     providerAuthStatus.claude,
@@ -85,6 +92,7 @@ export default function AgentsSettingsTab({
     providerAuthStatus.gemini,
     providerAuthStatus.hoocode,
     providerAuthStatus.opencode,
+    providerAuthStatus.githubcopilot,
   ]);
 
   return (
