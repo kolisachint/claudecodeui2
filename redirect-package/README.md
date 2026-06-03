@@ -23,7 +23,7 @@
 </div>
 
 <p align="center">
-  <a href="https://hoocowork.app">HooCowork</a> · <a href="https://hoocowork.app/docs">Documentation</a> · <a href="https://discord.gg/buxwujPNRE">Discord</a> · <a href="https://github.com/kolisachint/hoocowork/issues">Bug Reports</a> · <a href="https://github.com/kolisachint/hoocowork/blob/main/CONTRIBUTING.md">Contributing</a>
+  <a href="https://hoocowork.app">HooCowork</a> · <a href="https://hoocowork.app/docs">Documentation</a> · <a href="https://discord.gg/buxwujPNRE">Discord</a> · <a href="https://github.com/kolisachint/hoocowork/issues">Bug Reports</a> · <a href="https://github.com/kolisachint/hoocowork/blob/main/docs/CONTRIBUTING.md">Contributing</a>
 </p>
 
 <p align="center">

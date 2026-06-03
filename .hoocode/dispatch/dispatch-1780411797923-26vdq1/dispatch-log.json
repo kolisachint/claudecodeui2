@@ -1,0 +1,8 @@
+{
+  "timestamp": "2026-06-02T14:49:57.923Z",
+  "task_id": "dispatch-1780411797923-26vdq1",
+  "agent_type": "explore",
+  "reason": "user_override",
+  "complexity": "low",
+  "task": "Explore the /Users/sachinkoli/github/hoocowork/server/ directory thoroughly. I need you to understand the backend architecture:\n1. List all directories and key files\n2. Identify the main entry points, API routes, middleware, and database layer\n3. Look for WebSocket handling, authentication, file upload handling\n4. Check for potential issues like:\n   - Security concerns (hardcoded secrets, missing input validation, CORS issues)\n   - Error handling patterns\n   - Memory leaks or resource cleanup\n   - Inconsistent patterns\n   - Any TODO/FIXME comments\n5. Summarize the tech stack and architecture pattern used\n\nUse ls, find, grep, and read tools. Return a concise but comprehensive summary."
+}

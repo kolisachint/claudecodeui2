@@ -1,0 +1,5 @@
+{"type":"session","version":3,"id":"019e88cd-e371-7046-8880-f2d664b4328a","timestamp":"2026-06-02T14:47:35.025Z","cwd":"/Users/sachinkoli/github/hoocowork"}
+{"type":"model_change","id":"fc6aba11","parentId":null,"timestamp":"2026-06-02T14:47:35.030Z","provider":"nvidia","modelId":"haiku"}
+{"type":"thinking_level_change","id":"72780f30","parentId":"fc6aba11","timestamp":"2026-06-02T14:47:35.030Z","thinkingLevel":"off"}
+{"type":"message","id":"a681dd56","parentId":"72780f30","timestamp":"2026-06-02T14:47:35.038Z","message":{"role":"user","content":[{"type":"text","text":"Task: Investigate the repository structure, identify key components, and propose quick fixes for any issues found"}],"timestamp":1780411655037}}
+{"type":"message","id":"dd71c543","parentId":"a681dd56","timestamp":"2026-06-02T14:47:35.128Z","message":{"role":"assistant","content":[],"api":"openai-completions","provider":"nvidia","model":"haiku","usage":{"input":0,"output":0,"cacheRead":0,"cacheWrite":0,"totalTokens":0,"cost":{"input":0,"output":0,"cacheRead":0,"cacheWrite":0,"total":0}},"stopReason":"error","timestamp":1780411655057,"errorMessage":"404 404 page not found\n"}}

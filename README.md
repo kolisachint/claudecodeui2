@@ -8,7 +8,7 @@
 
 A desktop and mobile UI for [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Cursor CLI](https://docs.cursor.com/en/cli/overview), [Codex](https://developers.openai.com/codex), and [Gemini-CLI](https://geminicli.com/). Use it locally or remotely to view your active projects and sessions from anywhere.
 
-**[Website](https://hoocowork.app)** • **[Documentation](https://hoocowork.app/docs)** • **[Discord](https://discord.gg/buxwujPNRE)** • **[Issues](https://github.com/kolisachint/hoocowork/issues)** • **[Contributing](CONTRIBUTING.md)**
+**[Website](https://hoocowork.app)** • **[Documentation](https://hoocowork.app/docs)** • **[Discord](https://discord.gg/buxwujPNRE)** • **[Issues](https://github.com/kolisachint/hoocowork/issues)** • **[Contributing](docs/CONTRIBUTING.md)**
 
 ---
 
@@ -243,8 +243,8 @@ hoocowork/
 - [Documentation](https://hoocowork.app/docs)
 - [GitHub Issues](https://github.com/kolisachint/hoocowork/issues)
 - [Discord](https://discord.gg/buxwujPNRE)
-- [Contributing Guide](CONTRIBUTING.md)
-- [Release Notes](RELEASING.md)
+- [Contributing Guide](docs/CONTRIBUTING.md)
+- [Release Notes](docs/RELEASING.md)
 
 ---
 

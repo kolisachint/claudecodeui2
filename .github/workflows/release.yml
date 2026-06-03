@@ -49,11 +49,11 @@ jobs:
 
       - name: Generate changelog
         run: |
-          bun x conventional-changelog-cli -p conventionalcommits -i CHANGELOG.md -s
+          bun x conventional-changelog-cli -p conventionalcommits -i docs/CHANGELOG.md -s
 
       - name: Commit and tag
         run: |
-          git add package.json CHANGELOG.md
+          git add package.json docs/CHANGELOG.md
           git commit -m "chore(release): v${{ env.NEW_VERSION }}"
           git tag v${{ env.NEW_VERSION }}
           git push origin main --tags
