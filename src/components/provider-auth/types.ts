@@ -1,3 +1,8 @@
+import {
+  ALL_PROVIDER_IDS,
+  PROVIDER_DESCRIPTORS,
+  VISIBLE_PROVIDER_IDS,
+} from '../../providers/provider-registry';
 import type { LLMProvider } from '../../types/app';
 
 export type ProviderAuthStatus = {
@@ -10,22 +15,23 @@ export type ProviderAuthStatus = {
 
 export type ProviderAuthStatusMap = Record<LLMProvider, ProviderAuthStatus>;
 
-export const CLI_PROVIDERS: LLMProvider[] = ['claude', 'cursor', 'codex', 'gemini', 'hoocode', 'opencode'];
+/**
+ * All providers, including retired ("hidden") ones. Used for background auth
+ * sync so existing sessions of retired providers still report status.
+ */
+export const CLI_PROVIDERS: LLMProvider[] = ALL_PROVIDER_IDS;
 
-export const PROVIDER_AUTH_STATUS_ENDPOINTS: Record<LLMProvider, string> = {
-  claude: '/api/providers/claude/auth/status',
-  cursor: '/api/providers/cursor/auth/status',
-  codex: '/api/providers/codex/auth/status',
-  gemini: '/api/providers/gemini/auth/status',
-  hoocode: '/api/providers/hoocode/auth/status',
-  opencode: '/api/providers/opencode/auth/status',
-};
+/** Providers offered for new sessions — use this for auth UI surfaces. */
+export const VISIBLE_CLI_PROVIDERS: LLMProvider[] = VISIBLE_PROVIDER_IDS;
 
-export const createInitialProviderAuthStatusMap = (loading = true): ProviderAuthStatusMap => ({
-  claude: { authenticated: false, email: null, method: null, error: null, loading },
-  cursor: { authenticated: false, email: null, method: null, error: null, loading },
-  codex: { authenticated: false, email: null, method: null, error: null, loading },
-  gemini: { authenticated: false, email: null, method: null, error: null, loading },
-  hoocode: { authenticated: false, email: null, method: null, error: null, loading },
-  opencode: { authenticated: false, email: null, method: null, error: null, loading },
-});
+export const PROVIDER_AUTH_STATUS_ENDPOINTS: Record<LLMProvider, string> = Object.fromEntries(
+  PROVIDER_DESCRIPTORS.map((descriptor) => [descriptor.id, descriptor.authStatusEndpoint]),
+) as Record<LLMProvider, string>;
+
+export const createInitialProviderAuthStatusMap = (loading = true): ProviderAuthStatusMap =>
+  Object.fromEntries(
+    CLI_PROVIDERS.map((id) => [
+      id,
+      { authenticated: false, email: null, method: null, error: null, loading },
+    ]),
+  ) as ProviderAuthStatusMap;

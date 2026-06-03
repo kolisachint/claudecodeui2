@@ -14,7 +14,7 @@ import {
   GEMINI_MODELS,
   OPENCODE_MODELS,
   HOOCODE_MODELS,
-  PROVIDERS,
+  getVisibleProviders,
 } from "../../../../../shared/modelConstants";
 import type { ProjectSession, LLMProvider } from "../../../../types/app";
 import { NextTaskBanner } from "../../../task-master";
@@ -65,7 +65,9 @@ type ProviderGroup = {
   models: { value: string; label: string }[];
 };
 
-const PROVIDER_GROUPS: ProviderGroup[] = PROVIDERS.map((p) => ({
+// New-session selection only offers visible (non-retired) providers. Retired
+// providers still render in existing sessions via SessionProviderLogo etc.
+const PROVIDER_GROUPS: ProviderGroup[] = getVisibleProviders().map((p) => ({
   id: p.id as LLMProvider,
   name: p.name,
   models: p.models.OPTIONS,
