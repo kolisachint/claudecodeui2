@@ -141,6 +141,7 @@ export function useSettingsController({ isOpen, initialTab }: UseSettingsControl
   ));
   const [codexPermissionMode, setCodexPermissionMode] = useState<CodexPermissionMode>('default');
   const [geminiPermissionMode, setGeminiPermissionMode] = useState<GeminiPermissionMode>('default');
+  const [hoocodeThinkingMode, setHoocodeThinkingMode] = useState<string>('none');
 
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginProvider, setLoginProvider] = useState<ActiveLoginProvider>('');
@@ -184,6 +185,9 @@ export function useSettingsController({ isOpen, initialTab }: UseSettingsControl
         {},
       );
       setGeminiPermissionMode(savedGeminiSettings.permissionMode || 'default');
+
+      const savedHoocodeThinking = localStorage.getItem('hoocode-thinking-mode');
+      setHoocodeThinkingMode(savedHoocodeThinking || 'none');
 
       try {
         const notificationResponse = await authenticatedFetch('/api/settings/notification-preferences');
@@ -263,6 +267,8 @@ export function useSettingsController({ isOpen, initialTab }: UseSettingsControl
         lastUpdated: now,
       }));
 
+      localStorage.setItem('hoocode-thinking-mode', hoocodeThinkingMode);
+
       const notificationResponse = await authenticatedFetch('/api/settings/notification-preferences', {
         method: 'PUT',
         body: JSON.stringify(notificationPreferences),
@@ -289,6 +295,7 @@ export function useSettingsController({ isOpen, initialTab }: UseSettingsControl
     cursorPermissions.skipPermissions,
     notificationPreferences,
     geminiPermissionMode,
+    hoocodeThinkingMode,
     projectSortOrder,
   ]);
 
@@ -395,6 +402,8 @@ export function useSettingsController({ isOpen, initialTab }: UseSettingsControl
     providerAuthStatus,
     geminiPermissionMode,
     setGeminiPermissionMode,
+    hoocodeThinkingMode,
+    setHoocodeThinkingMode,
     openLoginForProvider,
     showLoginModal,
     setShowLoginModal,

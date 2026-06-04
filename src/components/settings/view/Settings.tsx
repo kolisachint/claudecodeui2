@@ -41,6 +41,8 @@ function Settings({ isOpen, onClose, projects = [], initialTab = 'agents', varia
     providerAuthStatus,
     geminiPermissionMode,
     setGeminiPermissionMode,
+    hoocodeThinkingMode,
+    setHoocodeThinkingMode,
     openLoginForProvider,
     showLoginModal,
     setShowLoginModal,
@@ -111,6 +113,8 @@ function Settings({ isOpen, onClose, projects = [], initialTab = 'agents', varia
                 onCodexPermissionModeChange={setCodexPermissionMode}
                 geminiPermissionMode={geminiPermissionMode}
                 onGeminiPermissionModeChange={setGeminiPermissionMode}
+                hoocodeThinkingMode={hoocodeThinkingMode}
+                onHoocodeThinkingModeChange={setHoocodeThinkingMode}
                 projects={projects}
                 onOpenMcpSettings={() => setActiveTab('mcp')}
               />

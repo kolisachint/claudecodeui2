@@ -1,13 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { CLAUDE_MODELS, HOOCODE_MODELS } from '../../../../../../../../shared/modelConstants';
 import type { AgentProvider } from '../../../../../types/types';
 
-const CLAUDE_MODELS = [
-  { id: 'claude-sonnet-4-5', name: 'Claude Sonnet 4.5' },
-  { id: 'claude-opus-4-1', name: 'Claude Opus 4.1' },
-  { id: 'claude-haiku-4-5', name: 'Claude Haiku 4.5' },
-];
+const MODEL_CATALOG: Record<string, { value: string; label: string }[]> = {
+  claude: CLAUDE_MODELS.OPTIONS,
+  hoocode: HOOCODE_MODELS.OPTIONS,
+};
+
+const DEFAULT_MODEL: Record<string, string> = {
+  claude: CLAUDE_MODELS.DEFAULT,
+  hoocode: HOOCODE_MODELS.DEFAULT,
+};
+
+const STORAGE_KEY: Record<string, string> = {
+  claude: 'claude-model',
+  hoocode: 'hoocode-model',
+};
 
 const THINKING_BUDGETS = [
   { id: 'auto', name: 'Auto' },
@@ -22,11 +32,37 @@ type ModelsContentProps = {
 
 export default function ModelsContent({ agent }: ModelsContentProps) {
   const { t } = useTranslation('settings');
-  const [selectedModel, setSelectedModel] = useState('claude-sonnet-4-5');
+  const storageKey = STORAGE_KEY[agent];
+  const catalog = MODEL_CATALOG[agent];
+  const defaultModel = DEFAULT_MODEL[agent];
+
+  const [selectedModel, setSelectedModel] = useState<string>(() => {
+    if (typeof window === 'undefined' || !storageKey) return defaultModel || '';
+    return localStorage.getItem(storageKey) || defaultModel || '';
+  });
   const [thinkingBudget, setThinkingBudget] = useState('auto');
 
-  // Only show for Claude and Hoocode initially - other agents can be added later
-  if (agent !== 'claude' && agent !== 'hoocode') {
+  // Keep in sync if localStorage changes externally
+  useEffect(() => {
+    if (!storageKey) return;
+    const sync = () => {
+      setSelectedModel(localStorage.getItem(storageKey) || defaultModel || '');
+    };
+    window.addEventListener('storage', sync);
+    return () => window.removeEventListener('storage', sync);
+  }, [storageKey, defaultModel]);
+
+  const handleModelChange = (value: string) => {
+    setSelectedModel(value);
+    if (storageKey) {
+      localStorage.setItem(storageKey, value);
+      // Dispatch custom event so the composer model pickers pick it up
+      window.dispatchEvent(new Event('model-changed'));
+    }
+  };
+
+  // Only show for agents with a known catalog
+  if (!catalog) {
     return (
       <div className="settings-section">
         <div className="settings-section-head">
@@ -52,11 +88,11 @@ export default function ModelsContent({ agent }: ModelsContentProps) {
               <select
                 className="composer-model"
                 value={selectedModel}
-                onChange={(e) => setSelectedModel(e.target.value)}
+                onChange={(e) => handleModelChange(e.target.value)}
               >
-                {CLAUDE_MODELS.map((model) => (
-                  <option key={model.id} value={model.id}>
-                    {model.name}
+                {catalog.map((model) => (
+                  <option key={model.value} value={model.value}>
+                    {model.label}
                   </option>
                 ))}
               </select>

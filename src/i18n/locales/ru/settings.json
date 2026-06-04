@@ -4,7 +4,8 @@
     "account": "Аккаунт",
     "permissions": "Разрешения",
     "mcpServers": "MCP серверы",
-    "appearance": "Внешний вид"
+    "appearance": "Внешний вид",
+    "thinking": "Thinking"
   },
   "account": {
     "title": "Аккаунт",
@@ -460,5 +461,11 @@
     "installAriaLabel": "URL git-репозитория плагина",
     "tab": "вкладка",
     "runningStatus": "запущен"
+  },
+  "thinking": {
+    "title": "Thinking mode",
+    "description": "Choose how the agent thinks before responding. Higher modes add a reasoning prefix to your message.",
+    "active": "Active",
+    "notAvailableForAgent": "Thinking mode is not available for {{agent}}."
   }
 }

@@ -69,11 +69,15 @@ const MessageComponent = memo(({ message, prevMessage, createDiff, onFileOpen, o
   const isCommandOrFileEditToolResponse = Boolean(
     message.isToolUse && COPY_HIDDEN_TOOL_NAMES.has(String(message.toolName || ''))
   );
+  const toolCopyControl = message.isToolUse && assistantCopyContent.trim().length > 0 && !isCommandOrFileEditToolResponse
+    ? <MessageCopyControl content={assistantCopyContent} messageType="assistant" />
+    : undefined;
   const shouldShowUserCopyControl = message.type === 'user' && userCopyContent.trim().length > 0;
   const shouldShowAssistantCopyControl = message.type === 'assistant' &&
     assistantCopyContent.trim().length > 0 &&
     !isCommandOrFileEditToolResponse &&
-    !message.isThinking;
+    !message.isThinking &&
+    !message.isToolUse;
 
 
   useEffect(() => {
@@ -184,18 +188,6 @@ const MessageComponent = memo(({ message, prevMessage, createDiff, onFileOpen, o
 
             {message.isToolUse ? (
               <div className="msg-tool">
-                <div className="tool-head">
-                  <span className="tool-glyph" aria-hidden="true">▍</span>
-                  <span className="tool-name">{message.toolName || 'Tool'}</span>
-                  <span className="tool-summary" />
-                  <ToolStatusBadge
-                    status={
-                      message.toolResult
-                        ? (message.toolResult.isError ? 'error' : 'completed')
-                        : 'running'
-                    }
-                  />
-                </div>
                 {!!message.displayText && (
                   <div className="flex flex-col">
                     <div className="flex flex-col">
@@ -221,6 +213,7 @@ const MessageComponent = memo(({ message, prevMessage, createDiff, onFileOpen, o
                     rawToolInput={typeof message.toolInput === 'string' ? message.toolInput : undefined}
                     isSubagentContainer={message.isSubagentContainer}
                     subagentState={message.subagentState}
+                    headerRight={toolCopyControl}
                   />
                 )}
 

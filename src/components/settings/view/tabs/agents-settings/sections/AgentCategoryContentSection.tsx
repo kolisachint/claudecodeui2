@@ -4,6 +4,7 @@ import type { McpProject } from '../../../../../mcp/types';
 import AccountContent from './content/AccountContent';
 import PermissionsContent from './content/PermissionsContent';
 import ModelsContent from './content/ModelsContent';
+import ThinkingModeContent from './content/ThinkingModeContent';
 import ToolsContent from './content/ToolsContent';
 
 export default function AgentCategoryContentSection({
@@ -20,6 +21,8 @@ export default function AgentCategoryContentSection({
   onCodexPermissionModeChange,
   geminiPermissionMode,
   onGeminiPermissionModeChange,
+  hoocodeThinkingMode,
+  onHoocodeThinkingModeChange,
   projects,
   onOpenMcpSettings,
 }: AgentCategoryContentSectionProps & { onOpenMcpSettings: () => void }) {
@@ -130,6 +133,16 @@ export default function AgentCategoryContentSection({
 
   if (selectedCategory === 'models') {
     return <ModelsContent agent={selectedAgent} />;
+  }
+
+  if (selectedCategory === 'thinking' && (selectedAgent === 'hoocode' || selectedAgent === 'claude')) {
+    return (
+      <ThinkingModeContent
+        agent={selectedAgent}
+        selectedMode={selectedAgent === 'hoocode' ? hoocodeThinkingMode : 'none'}
+        onChange={selectedAgent === 'hoocode' ? onHoocodeThinkingModeChange : () => {}}
+      />
+    );
   }
 
   return null;

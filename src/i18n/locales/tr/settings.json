@@ -4,7 +4,8 @@
     "account": "Hesap",
     "permissions": "İzinler",
     "mcpServers": "MCP Sunucuları",
-    "appearance": "Görünüm"
+    "appearance": "Görünüm",
+    "thinking": "Thinking"
   },
   "account": {
     "title": "Hesap",
@@ -486,5 +487,11 @@
     "installAriaLabel": "Eklenti git deposu URL'si",
     "tab": "sekme",
     "runningStatus": "çalışıyor"
+  },
+  "thinking": {
+    "title": "Thinking mode",
+    "description": "Choose how the agent thinks before responding. Higher modes add a reasoning prefix to your message.",
+    "active": "Active",
+    "notAvailableForAgent": "Thinking mode is not available for {{agent}}."
   }
 }

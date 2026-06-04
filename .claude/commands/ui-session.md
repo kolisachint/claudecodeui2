@@ -21,7 +21,10 @@ $ARGUMENTS (optional) = a short session name used for the working branch (e.g. `
 
 3. **Launch the dev servers in the background** (Vite on :5173 + API on :3001):
    - `npm run dev` (kills others on exit). Confirm both ports are up.
-   - Report the URL: http://localhost:5173
+   - Detect the network IP and report both:
+     - Local:  http://localhost:5173
+     - Network: `http://<ip>:5173/` (from the Vite startup output, e.g. `Network: http://192.168.x.x:5173/`).
+   - If detection fails, run `ifconfig | grep inet | head -5` or `ip addr show | grep inet` to find the LAN IP.
 
 4. **Enter iterate mode.** I'm now ready for UI requests over chat. For each request:
    - Locate the component via the `docs/ui-map.md` Quick Index; delegate search to

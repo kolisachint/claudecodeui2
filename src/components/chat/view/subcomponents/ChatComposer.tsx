@@ -184,7 +184,6 @@ export default function ChatComposer({
   thinkingAvailable = true,
 }: ChatComposerProps) {
   const { t } = useTranslation('chat');
-  const textareaRect = textareaRef.current?.getBoundingClientRect();
 
   const [modelDropdownOpen, setModelDropdownOpen] = useState(false);
   const modelDropdownRef = useRef<HTMLDivElement>(null);
@@ -200,12 +199,6 @@ export default function ChatComposer({
   }, [modelDropdownOpen]);
   const providerDesc = getProviderDescriptor(provider as string);
   const currentModelLabel = modelOptions.find(o => o.value === activeModel)?.label || activeModel;
-  const commandMenuPosition = {
-    top: textareaRect ? Math.max(16, textareaRect.top - 316) : 0,
-    left: textareaRect ? textareaRect.left : 16,
-    bottom: textareaRect ? window.innerHeight - textareaRect.top + 8 : 90,
-  };
-
   // Detect if the AskUserQuestion interactive panel is active
   const hasQuestionPanel = pendingPermissionRequests.some(
     (r) => r.toolName === 'AskUserQuestion'
@@ -216,6 +209,7 @@ export default function ChatComposer({
       {pendingPermissionRequests.length > 0 && (
         <div className="mb-3 w-full">
           <PermissionRequestsBanner
+            provider={provider}
             pendingPermissionRequests={pendingPermissionRequests}
             handlePermissionDecision={handlePermissionDecision}
             handleGrantToolPermission={handleGrantToolPermission}
@@ -322,7 +316,6 @@ export default function ChatComposer({
           selectedIndex={selectedCommandIndex}
           onSelect={onCommandSelect}
           onClose={onCloseCommandMenu}
-          position={commandMenuPosition}
           isOpen={isCommandMenuOpen}
           frequentCommands={frequentCommands}
         />

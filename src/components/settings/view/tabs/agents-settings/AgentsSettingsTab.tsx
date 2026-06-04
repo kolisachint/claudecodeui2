@@ -22,6 +22,8 @@ export default function AgentsSettingsTab({
   onCodexPermissionModeChange,
   geminiPermissionMode,
   onGeminiPermissionModeChange,
+  hoocodeThinkingMode,
+  onHoocodeThinkingModeChange,
   projects,
   onOpenMcpSettings,
 }: AgentsSettingsTabProps & { onOpenMcpSettings: () => void }) {
@@ -124,6 +126,8 @@ export default function AgentsSettingsTab({
         onCodexPermissionModeChange={onCodexPermissionModeChange}
         geminiPermissionMode={geminiPermissionMode}
         onGeminiPermissionModeChange={onGeminiPermissionModeChange}
+        hoocodeThinkingMode={hoocodeThinkingMode}
+        onHoocodeThinkingModeChange={onHoocodeThinkingModeChange}
         projects={projects}
         onOpenMcpSettings={onOpenMcpSettings}
       />

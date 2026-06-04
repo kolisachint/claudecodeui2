@@ -4,7 +4,8 @@
     "account": "账户",
     "permissions": "权限",
     "mcpServers": "MCP 服务器",
-    "appearance": "外观"
+    "appearance": "外观",
+    "thinking": "Thinking"
   },
   "account": {
     "title": "账户",
@@ -480,5 +481,11 @@
     "installAriaLabel": "插件 git 仓库 URL",
     "tab": "标签",
     "runningStatus": "运行中"
+  },
+  "thinking": {
+    "title": "Thinking mode",
+    "description": "Choose how the agent thinks before responding. Higher modes add a reasoning prefix to your message.",
+    "active": "Active",
+    "notAvailableForAgent": "Thinking mode is not available for {{agent}}."
   }
 }
