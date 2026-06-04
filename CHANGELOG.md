@@ -1,3 +1,8 @@
+## [2.5.7](https://github.com/kolisachint/hoocowork/compare/v2.5.6...v2.5.7) (2026-06-04)
+
+### Features
+
+* collapse tool-use output, add HooCode agent settings, fix inline positioning ([4dc9680](https://github.com/kolisachint/hoocowork/commit/4dc968049d61cb96ed626a1ee35048d14ee0d02b))
 ## [2.5.6](https://github.com/kolisachint/hoocowork/compare/v2.5.5...v2.5.6) (2026-06-04)
 
 ### Features
