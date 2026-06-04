@@ -47,6 +47,29 @@ const flattenFileTree = (files: ProjectFileNode[], basePath = ''): MentionableFi
   return flattened;
 };
 
+// Rank file matches the way HooCode's `@` autocomplete does: exact name beats a
+// name prefix, beats a path prefix, beats a name substring, beats a path
+// substring; shorter paths win ties. Returns -1 for non-matches.
+const scoreFile = (file: MentionableFile, query: string): number => {
+  const name = file.name.toLowerCase();
+  const path = file.path.toLowerCase();
+  if (name === query) return 100;
+  if (name.startsWith(query)) return 80;
+  if (path.startsWith(query)) return 70;
+  const nameIndex = name.indexOf(query);
+  if (nameIndex !== -1) return 50 - Math.min(nameIndex, 19);
+  const pathIndex = path.indexOf(query);
+  if (pathIndex !== -1) return 30 - Math.min(pathIndex, 19);
+  return -1;
+};
+
+const rankFiles = (files: MentionableFile[], query: string): MentionableFile[] =>
+  files
+    .map((file) => ({ file, score: scoreFile(file, query) }))
+    .filter((entry) => entry.score >= 0)
+    .sort((a, b) => b.score - a.score || a.file.path.length - b.file.path.length)
+    .map((entry) => entry.file);
+
 export function useFileMentions({ selectedProject, input, setInput, textareaRef }: UseFileMentionsOptions) {
   const [fileList, setFileList] = useState<MentionableFile[]>([]);
   const [fileMentions, setFileMentions] = useState<string[]>([]);
@@ -112,17 +135,13 @@ export function useFileMentions({ selectedProject, input, setInput, textareaRef 
 
     setAtSymbolPosition(lastAtIndex);
     setShowFileDropdown(true);
-    setSelectedFileIndex(-1);
 
-    const matchingFiles = fileList
-      .filter(
-        (file) =>
-          file.name.toLowerCase().includes(textAfterAt.toLowerCase()) ||
-          file.path.toLowerCase().includes(textAfterAt.toLowerCase()),
-      )
-      .slice(0, 10);
+    const query = textAfterAt.toLowerCase();
+    const matchingFiles = (query ? rankFiles(fileList, query) : fileList).slice(0, 10);
 
     setFilteredFiles(matchingFiles);
+    // Highlight the top match so Enter/Tab selects it immediately.
+    setSelectedFileIndex(matchingFiles.length > 0 ? 0 : -1);
   }, [input, cursorPosition, fileList]);
 
   const activeFileMentions = useMemo(() => {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Dispatch, KeyboardEvent, RefObject, SetStateAction } from 'react';
 import Fuse from 'fuse.js';
 
@@ -6,8 +6,6 @@ import { authenticatedFetch } from '../../../utils/api';
 import { safeLocalStorage } from '../utils/chatStorage';
 import { loadSessionResource } from '../utils/sessionResourceCache';
 import type { Project } from '../../../types/app';
-
-const COMMAND_QUERY_DEBOUNCE_MS = 150;
 
 export interface SlashCommand {
   name: string;
@@ -89,22 +87,12 @@ export function useSlashCommands({
   const [selectedCommandIndex, setSelectedCommandIndex] = useState(-1);
   const [slashPosition, setSlashPosition] = useState(-1);
 
-  const commandQueryTimerRef = useRef<number | null>(null);
-
-  const clearCommandQueryTimer = useCallback(() => {
-    if (commandQueryTimerRef.current !== null) {
-      window.clearTimeout(commandQueryTimerRef.current);
-      commandQueryTimerRef.current = null;
-    }
-  }, []);
-
   const resetCommandMenuState = useCallback(() => {
     setShowCommandMenu(false);
     setSlashPosition(-1);
     setCommandQuery('');
     setSelectedCommandIndex(-1);
-    clearCommandQueryTimer();
-  }, [clearCommandQueryTimer]);
+  }, []);
 
   useEffect(() => {
     if (!selectedProject) {
@@ -145,11 +133,11 @@ export function useSlashCommands({
     };
   }, [selectedProject, provider]);
 
+  // Keep the top match highlighted while the menu is open so Enter/Tab selects
+  // it; clear the highlight when it closes.
   useEffect(() => {
-    if (!showCommandMenu) {
-      setSelectedCommandIndex(-1);
-    }
-  }, [showCommandMenu]);
+    setSelectedCommandIndex(showCommandMenu && filteredCommands.length > 0 ? 0 : -1);
+  }, [showCommandMenu, filteredCommands]);
 
   const fuse = useMemo(() => {
     if (!slashCommands.length) {
@@ -303,14 +291,12 @@ export function useSlashCommands({
 
       setSlashPosition(slashPos);
       setShowCommandMenu(true);
-      setSelectedCommandIndex(-1);
-
-      clearCommandQueryTimer();
-      commandQueryTimerRef.current = window.setTimeout(() => {
-        setCommandQuery(query);
-      }, COMMAND_QUERY_DEBOUNCE_MS);
+      // Filter synchronously (like HooCode) so the inline match — and the
+      // top-match highlight Enter selects — is always current, even when the
+      // user types and hits Enter in the same beat.
+      setCommandQuery(query);
     },
-    [resetCommandMenuState, clearCommandQueryTimer],
+    [resetCommandMenuState],
   );
 
   const handleCommandMenuKeyDown = useCallback(
@@ -363,13 +349,6 @@ export function useSlashCommands({
       return false;
     },
     [showCommandMenu, filteredCommands, resetCommandMenuState, selectCommandFromKeyboard, selectedCommandIndex],
-  );
-
-  useEffect(
-    () => () => {
-      clearCommandQueryTimer();
-    },
-    [clearCommandQueryTimer],
   );
 
   return {
