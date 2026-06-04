@@ -3,7 +3,8 @@ import { ShieldAlertIcon } from 'lucide-react';
 
 import type { PendingPermissionRequest } from '../../types/types';
 import { buildClaudeToolPermissionEntry, formatToolInputForDisplay } from '../../utils/chatPermissions';
-import { getClaudeSettings } from '../../utils/chatStorage';
+import { getClaudeSettings, getHoocodeSettings } from '../../utils/chatStorage';
+import { grantHoocodeToolPermission } from '../../utils/chatPermissions';
 import { getPermissionPanel, registerPermissionPanel } from '../../tools/configs/permissionPanelRegistry';
 import { AskUserQuestionPanel } from '../../tools/components/InteractiveRenderers';
 import {
@@ -17,6 +18,7 @@ import {
 registerPermissionPanel('AskUserQuestion', AskUserQuestionPanel);
 
 interface PermissionRequestsBannerProps {
+  provider?: string;
   pendingPermissionRequests: PendingPermissionRequest[];
   handlePermissionDecision: (
     requestIds: string | string[],
@@ -26,6 +28,7 @@ interface PermissionRequestsBannerProps {
 }
 
 export default function PermissionRequestsBanner({
+  provider = 'claude',
   pendingPermissionRequests,
   handlePermissionDecision,
   handleGrantToolPermission,
@@ -55,7 +58,7 @@ export default function PermissionRequestsBanner({
 
         const rawInput = formatToolInputForDisplay(request.input);
         const permissionEntry = buildClaudeToolPermissionEntry(request.toolName, rawInput);
-        const settings = getClaudeSettings();
+        const settings = provider === 'hoocode' ? getHoocodeSettings() : getClaudeSettings();
         const alreadyAllowed = permissionEntry ? settings.allowedTools.includes(permissionEntry) : false;
         const rememberLabel = alreadyAllowed ? 'Allow (saved)' : 'Allow & remember';
         const matchingRequestIds = permissionEntry
@@ -108,7 +111,11 @@ export default function PermissionRequestsBanner({
                 variant="outline"
                 onClick={() => {
                   if (permissionEntry && !alreadyAllowed) {
-                    handleGrantToolPermission({ entry: permissionEntry, toolName: request.toolName });
+                    if (provider === 'hoocode') {
+                      grantHoocodeToolPermission(permissionEntry);
+                    } else {
+                      handleGrantToolPermission({ entry: permissionEntry, toolName: request.toolName });
+                    }
                   }
                   handlePermissionDecision(matchingRequestIds, { allow: true, rememberEntry: permissionEntry });
                 }}

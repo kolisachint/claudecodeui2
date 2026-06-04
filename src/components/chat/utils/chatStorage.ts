@@ -1,6 +1,7 @@
 import type { ClaudeSettings } from '../types/types';
 
 export const CLAUDE_SETTINGS_KEY = 'claude-settings';
+export const HOOCODE_SETTINGS_KEY = 'hoocode-settings';
 
 export const safeLocalStorage = {
   setItem: (key: string, value: string) => {
@@ -43,8 +44,7 @@ export const safeLocalStorage = {
   },
 };
 
-export function getClaudeSettings(): ClaudeSettings {
-  const raw = safeLocalStorage.getItem(CLAUDE_SETTINGS_KEY);
+function parseClaudeSettings(raw: string | null): ClaudeSettings {
   if (!raw) {
     return {
       allowedTools: [],
@@ -71,4 +71,12 @@ export function getClaudeSettings(): ClaudeSettings {
       projectSortOrder: 'name',
     };
   }
+}
+
+export function getClaudeSettings(): ClaudeSettings {
+  return parseClaudeSettings(safeLocalStorage.getItem(CLAUDE_SETTINGS_KEY));
+}
+
+export function getHoocodeSettings(): ClaudeSettings {
+  return parseClaudeSettings(safeLocalStorage.getItem(HOOCODE_SETTINGS_KEY));
 }

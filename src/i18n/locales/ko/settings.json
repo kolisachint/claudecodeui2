@@ -4,7 +4,8 @@
     "account": "계정",
     "permissions": "권한",
     "mcpServers": "MCP 서버",
-    "appearance": "외관"
+    "appearance": "외관",
+    "thinking": "Thinking"
   },
   "account": {
     "title": "계정",
@@ -480,5 +481,11 @@
     "installAriaLabel": "플러그인 git 저장소 URL",
     "tab": "탭",
     "runningStatus": "실행 중"
+  },
+  "thinking": {
+    "title": "Thinking mode",
+    "description": "Choose how the agent thinks before responding. Higher modes add a reasoning prefix to your message.",
+    "active": "Active",
+    "notAvailableForAgent": "Thinking mode is not available for {{agent}}."
   }
 }

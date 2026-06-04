@@ -1,5 +1,4 @@
-import { useState, useRef, useEffect, useCallback, type CSSProperties } from 'react';
-import { createPortal } from 'react-dom';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Brain, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -17,9 +16,7 @@ function ThinkingModeSelector({ selectedMode, onModeChange, onClose, className =
   const { t } = useTranslation('chat');
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [dropdownStyle, setDropdownStyle] = useState<CSSProperties | null>(null);
 
   // Mapping from mode ID to translation key
   const modeKeyMap: Record<string, string> = {
@@ -41,67 +38,6 @@ function ThinkingModeSelector({ selectedMode, onModeChange, onClose, className =
     setIsOpen(false);
     onClose?.();
   }, [onClose]);
-
-  const updateDropdownPosition = useCallback(() => {
-    const trigger = triggerRef.current;
-    const dropdown = dropdownRef.current;
-    if (!trigger || !dropdown || typeof window === 'undefined') {
-      return;
-    }
-
-    const triggerRect = trigger.getBoundingClientRect();
-    const viewportPadding = window.innerWidth < 640 ? 12 : 16;
-    const spacing = 8;
-    const width = Math.min(window.innerWidth - viewportPadding * 2, window.innerWidth < 640 ? 320 : 256);
-    let left = triggerRect.left + triggerRect.width / 2 - width / 2;
-    left = Math.max(viewportPadding, Math.min(left, window.innerWidth - width - viewportPadding));
-
-    const measuredHeight = dropdown.offsetHeight || 0;
-    const spaceBelow = window.innerHeight - triggerRect.bottom - spacing - viewportPadding;
-    const spaceAbove = triggerRect.top - spacing - viewportPadding;
-    const openBelow = spaceBelow >= Math.min(measuredHeight || 320, 320) || spaceBelow >= spaceAbove;
-    const availableHeight = Math.min(
-      window.innerHeight - viewportPadding * 2,
-      Math.max(180, openBelow ? spaceBelow : spaceAbove),
-    );
-    const panelHeight = Math.min(measuredHeight || availableHeight, availableHeight);
-    const top = openBelow
-      ? Math.min(triggerRect.bottom + spacing, window.innerHeight - viewportPadding - panelHeight)
-      : Math.max(viewportPadding, triggerRect.top - spacing - panelHeight);
-
-    setDropdownStyle({
-      position: 'fixed',
-      top,
-      left,
-      // Override the `.think-dropdown` class defaults (bottom/right), which are
-      // meant for the absolutely-positioned model dropdown and would otherwise
-      // collapse this fixed, portal-rendered panel to zero height.
-      right: 'auto',
-      bottom: 'auto',
-      width,
-      maxHeight: availableHeight,
-      zIndex: 80,
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!isOpen) {
-      setDropdownStyle(null);
-      return;
-    }
-
-    const rafId = window.requestAnimationFrame(updateDropdownPosition);
-    const handleViewportChange = () => updateDropdownPosition();
-
-    window.addEventListener('resize', handleViewportChange);
-    window.addEventListener('scroll', handleViewportChange, true);
-
-    return () => {
-      window.cancelAnimationFrame(rafId);
-      window.removeEventListener('resize', handleViewportChange);
-      window.removeEventListener('scroll', handleViewportChange, true);
-    };
-  }, [isOpen, updateDropdownPosition]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -142,7 +78,6 @@ function ThinkingModeSelector({ selectedMode, onModeChange, onClose, className =
   return (
     <div className={`relative ${className}`} ref={containerRef}>
       <button
-        ref={triggerRef}
         type="button"
         onClick={() => {
           if (isOpen) {
@@ -173,10 +108,10 @@ function ThinkingModeSelector({ selectedMode, onModeChange, onClose, className =
         )}
       </button>
 
-      {isOpen && typeof document !== 'undefined' && createPortal(
+      {isOpen && (
         <div
           ref={dropdownRef}
-          style={dropdownStyle || { position: 'fixed', top: 0, left: 0, visibility: 'hidden' }}
+          style={{ maxHeight: 'min(70vh, 420px)' }}
           className="think-dropdown flex flex-col overflow-hidden"
           role="dialog"
           aria-modal="false"
@@ -239,8 +174,7 @@ function ThinkingModeSelector({ selectedMode, onModeChange, onClose, className =
               <strong>Tip:</strong> {t('thinkingMode.selector.tip')}
             </p>
           </div>
-        </div>,
-        document.body
+        </div>
       )}
     </div>
   );

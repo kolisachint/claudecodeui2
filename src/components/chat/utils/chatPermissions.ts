@@ -1,7 +1,7 @@
 import { safeJsonParse } from '../../../lib/utils.js';
 import type { ChatMessage, ClaudePermissionSuggestion, PermissionGrantResult } from '../types/types.js';
 
-import { CLAUDE_SETTINGS_KEY, getClaudeSettings, safeLocalStorage } from './chatStorage';
+import { CLAUDE_SETTINGS_KEY, HOOCODE_SETTINGS_KEY, getClaudeSettings, getHoocodeSettings, safeLocalStorage } from './chatStorage';
 
 export function buildClaudeToolPermissionEntry(toolName?: string, toolInput?: unknown) {
   if (!toolName) return null;
@@ -34,14 +34,14 @@ export function getClaudePermissionSuggestion(
   message: ChatMessage | null | undefined,
   provider: string,
 ): ClaudePermissionSuggestion | null {
-  if (provider !== 'claude') return null;
+  if (provider !== 'claude' && provider !== 'hoocode') return null;
   if (!message?.toolResult?.isError) return null;
 
   const toolName = message?.toolName;
   const entry = buildClaudeToolPermissionEntry(toolName, message.toolInput);
   if (!entry) return null;
 
-  const settings = getClaudeSettings();
+  const settings = provider === 'hoocode' ? getHoocodeSettings() : getClaudeSettings();
   const isAllowed = settings.allowedTools.includes(entry);
   return { toolName: toolName || 'UnknownTool', entry, isAllowed };
 }
@@ -61,5 +61,23 @@ export function grantClaudeToolPermission(entry: string | null): PermissionGrant
   };
 
   safeLocalStorage.setItem(CLAUDE_SETTINGS_KEY, JSON.stringify(updatedSettings));
+  return { success: true, alreadyAllowed, updatedSettings };
+}
+
+export function grantHoocodeToolPermission(entry: string | null): PermissionGrantResult {
+  if (!entry) return { success: false };
+
+  const settings = getHoocodeSettings();
+  const alreadyAllowed = settings.allowedTools.includes(entry);
+  const nextAllowed = alreadyAllowed ? settings.allowedTools : [...settings.allowedTools, entry];
+  const nextDisallowed = settings.disallowedTools.filter((tool) => tool !== entry);
+  const updatedSettings = {
+    ...settings,
+    allowedTools: nextAllowed,
+    disallowedTools: nextDisallowed,
+    lastUpdated: new Date().toISOString(),
+  };
+
+  safeLocalStorage.setItem(HOOCODE_SETTINGS_KEY, JSON.stringify(updatedSettings));
   return { success: true, alreadyAllowed, updatedSettings };
 }

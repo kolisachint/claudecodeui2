@@ -155,7 +155,12 @@ export function useChatComposerState({
   const [uploadingImages, setUploadingImages] = useState<Map<string, number>>(new Map());
   const [imageErrors, setImageErrors] = useState<Map<string, string>>(new Map());
   const [isTextareaExpanded, setIsTextareaExpanded] = useState(false);
-  const [thinkingMode, setThinkingMode] = useState('none');
+  const [thinkingMode, setThinkingMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('hoocode-thinking-mode') || 'none';
+    }
+    return 'none';
+  });
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const inputHighlightRef = useRef<HTMLDivElement>(null);
@@ -779,6 +784,12 @@ export function useChatComposerState({
   useEffect(() => {
     inputValueRef.current = input;
   }, [input]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('hoocode-thinking-mode', thinkingMode);
+    }
+  }, [thinkingMode]);
 
   useEffect(() => {
     if (!selectedProject) {

@@ -33,6 +33,7 @@ interface ToolRendererProps {
     currentToolIndex: number;
     isComplete: boolean;
   };
+  headerRight?: React.ReactNode;
 }
 
 function getToolCategory(toolName: string): string {
@@ -84,7 +85,8 @@ export const ToolRenderer: React.FC<ToolRendererProps> = memo(({
   showRawParameters = false,
   rawToolInput,
   isSubagentContainer,
-  subagentState
+  subagentState,
+  headerRight,
 }) => {
   const config = getToolConfig(toolName);
   const displayConfig: any = mode === 'input' ? config.input : config.result;
@@ -284,6 +286,7 @@ export const ToolRenderer: React.FC<ToolRendererProps> = memo(({
         defaultOpen={defaultOpen}
         onTitleClick={handleTitleClick}
         badge={badgeElement}
+        rightSlot={headerRight}
         showRawParameters={mode === 'input' && showRawParameters}
         rawContent={rawToolInput}
         toolCategory={getToolCategory(toolName)}

@@ -16,7 +16,6 @@ type CommandMenuProps = {
   selectedIndex?: number;
   onSelect?: (command: CommandMenuCommand, index: number, isHover: boolean) => void;
   onClose: () => void;
-  position?: { top: number; left: number; bottom?: number };
   isOpen?: boolean;
   frequentCommands?: CommandMenuCommand[];
 };
@@ -52,43 +51,29 @@ const getCommandKey = (command: CommandMenuCommand) =>
 
 const getNamespace = (command: CommandMenuCommand) => command.namespace || command.type || 'other';
 
-const getMenuPosition = (position: { top: number; left: number; bottom?: number }): CSSProperties => {
-  if (typeof window === 'undefined') {
-    return { position: 'fixed', top: '16px', left: '16px' };
-  }
-  if (window.innerWidth < 640) {
-    return {
-      position: 'fixed',
-      bottom: `${position.bottom ?? 90}px`,
-      left: '16px',
-      right: '16px',
-      width: 'auto',
-      maxWidth: 'calc(100vw - 32px)',
-      maxHeight: 'min(50vh, 300px)',
-    };
-  }
-  return {
-    position: 'fixed',
-    top: `${Math.max(16, Math.min(position.top, window.innerHeight - 316))}px`,
-    left: `${position.left}px`,
-    width: 'min(400px, calc(100vw - 32px))',
-    maxWidth: 'calc(100vw - 32px)',
-    maxHeight: '300px',
-  };
-};
+// Anchor inline to the composer wrapper (the nearest positioned ancestor),
+// matching the `@` file/mention dropdown so the menu floats directly above the
+// textarea instead of being pinned to the viewport.
+const getMenuPosition = (): CSSProperties => ({
+  position: 'absolute',
+  bottom: '100%',
+  left: 0,
+  right: 0,
+  marginBottom: '8px',
+  maxHeight: '300px',
+});
 
 export default function CommandMenu({
   commands = [],
   selectedIndex = -1,
   onSelect,
   onClose,
-  position = { top: 0, left: 0 },
   isOpen = false,
   frequentCommands = [],
 }: CommandMenuProps) {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const selectedItemRef = useRef<HTMLDivElement | null>(null);
-  const menuPosition = getMenuPosition(position);
+  const menuPosition = getMenuPosition();
 
   useEffect(() => {
     if (!isOpen) {

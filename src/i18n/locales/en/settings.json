@@ -5,7 +5,8 @@
     "permissions": "Permissions",
     "tools": "Tools",
     "models": "Models",
-    "appearance": "Appearance"
+    "appearance": "Appearance",
+    "thinking": "Thinking"
   },
   "account": {
     "title": "Account",
@@ -531,5 +532,11 @@
     "filterAriaLabel": "Filter installed plugins",
     "official": "official",
     "noMatches": "No plugins match your filter."
+  },
+  "thinking": {
+    "title": "Thinking mode",
+    "description": "Choose how the agent thinks before responding. Higher modes add a reasoning prefix to your message.",
+    "active": "Active",
+    "notAvailableForAgent": "Thinking mode is not available for {{agent}}."
   }
 }
