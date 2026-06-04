@@ -127,10 +127,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
 
-      - name: Publish to npm
+      - name: Verify npm auth
         if: steps.check.outputs.release == 'true'
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-          npm publish --access public
+          # Fail fast with a clear error if the token is missing/expired or
+          # lacks rights to the @kolisachint scope. Without this, a bad token
+          # surfaces only at `npm publish` as a misleading 404, after the
+          # version has already been bumped, committed, tagged, and released.
+          npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to npm
+        if: steps.check.outputs.release == 'true'
+        run: npm publish --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
