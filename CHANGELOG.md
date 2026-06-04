@@ -1,3 +1,8 @@
+## [2.5.6](https://github.com/kolisachint/hoocowork/compare/v2.5.5...v2.5.6) (2026-06-04)
+
+### Features
+
+* add /pr command and label-driven npm release ([583ea7c](https://github.com/kolisachint/hoocowork/commit/583ea7c1a75353e08e1d256ea0463c00e0a7f6db))
 ## [2.5.5](https://github.com/kolisachint/hoocowork/compare/v2.5.4...v2.5.5) (2026-06-04)
 
 ### Continuous Integration
