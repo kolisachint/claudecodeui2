@@ -1,3 +1,21 @@
+## [2.5.4](https://github.com/kolisachint/hoocowork/compare/v2.5.1...v2.5.4) (2026-06-04)
+
+### Features
+
+* **chat:** add a # task-reference pane to the composer ([745fda8](https://github.com/kolisachint/hoocowork/commit/745fda86f90ed79456914b526e1a9fa3108ec904))
+* **chat:** add design-spec header + status badge to the tool box ([0fc197a](https://github.com/kolisachint/hoocowork/commit/0fc197aec9af3c84d6f3dcc78c78046b7ab6a43b))
+* **chat:** match HooCode autocomplete flavour for / and @ panes ([6c37bbf](https://github.com/kolisachint/hoocowork/commit/6c37bbfe8f8402a5b6c1287ba4514ab2d00f66df))
+* **chat:** session-cache HooCode live catalogs and wire thinking to model ([bfa4556](https://github.com/kolisachint/hoocowork/commit/bfa45565f5d4c478671b6a7edfc29449f24d0ec5))
+* hoo branding refresh, ui polish, and bug fixes ([a7e547f](https://github.com/kolisachint/hoocowork/commit/a7e547fb6f20b1038bd59acf4b7b55a695399553))
+* **providers:** add GitHub Copilot as a second-class provider ([36543e9](https://github.com/kolisachint/hoocowork/commit/36543e9ce383a67cf20fa00b400b872f16e8529d))
+* **providers:** hide retired CLIs via a frontend provider registry ([89c1909](https://github.com/kolisachint/hoocowork/commit/89c19097ee10bbfc5940f23c89bd6899cbd735e2))
+
+### Bug Fixes
+
+* **brand:** align app icons and logos with Hoo brand system ([19f8bd4](https://github.com/kolisachint/hoocowork/commit/19f8bd47cdbde553c4ae5d8ab52851356e33915c)), closes [#6366f1](https://github.com/kolisachint/hoocowork/issues/6366f1) [#00F0FF](https://github.com/kolisachint/hoocowork/issues/00F0FF) [#FAFAFA](https://github.com/kolisachint/hoocowork/issues/FAFAFA)
+* **chat:** make model picker scroll and thinking selector work everywhere ([17c552e](https://github.com/kolisachint/hoocowork/commit/17c552e1ca4dfb29ebe81760e05e91e2b1011b17))
+* **settings:** give HooCode the full agent tab set, matching Claude ([8d9c875](https://github.com/kolisachint/hoocowork/commit/8d9c87526cb90a1c3b5950768d7b231d05c35d8d))
+* **ui:** correct font-size issues across phone and desktop ([2180dc0](https://github.com/kolisachint/hoocowork/commit/2180dc045632387b94d5b7c94eb57f270f052a22))
 ## [2.5.1](https://github.com/kolisachint/hoocowork/compare/v2.5.0...v2.5.1) (2026-05-18)
 
 ### Features
