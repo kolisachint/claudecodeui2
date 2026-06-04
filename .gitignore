@@ -108,7 +108,9 @@ temp/
 .netlify
 
 # AI specific - user config (not project config)
-.claude/
+.claude/*
+# ...but keep project commands tracked
+!.claude/commands/
 .cursor/
 .roo/
 .taskmaster/
