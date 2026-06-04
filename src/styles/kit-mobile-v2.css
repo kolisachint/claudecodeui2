@@ -79,6 +79,23 @@
     min-height: 80px;
   }
 
+  /* iOS Safari zooms the page when a focused field is < 16px (it ignores
+     user-scalable=no for this). Keep every text field at 16px on phones so
+     focusing a settings/search/MCP input doesn't jump the viewport. */
+  .input,
+  .textarea,
+  .select,
+  .prd-textarea,
+  input[type="text"],
+  input[type="search"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="url"],
+  textarea {
+    font-size: 16px;
+  }
+
   /* Hide noisy secondary controls. Anything an advanced user needs
      (slash commands, file mention) can be typed directly into the textarea. */
   .composer-tool[title="Mention file"],
