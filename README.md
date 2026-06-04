@@ -37,18 +37,6 @@ hoocowork
 
 Open `http://localhost:3001`. Existing sessions are discovered automatically.
 
-### Standalone Binary
-
-Download from [Releases](https://github.com/kolisachint/hoocowork/releases) — no Node.js needed.
-
-| Platform | Binary |
-|----------|--------|
-| Windows x64 | `hoocowork-win-x64.exe` |
-| macOS ARM64 | `hoocowork-darwin-arm64` |
-| macOS x64 | `hoocowork-darwin-x64` |
-| Linux x64 | `hoocowork-linux-x64` |
-| Linux ARM64 | `hoocowork-linux-arm64` |
-
 ---
 
 ## Features
