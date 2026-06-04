@@ -4,7 +4,6 @@ import type { AgentCategory } from '../../../../types/types';
 import type { AgentCategoryTabsSectionProps } from '../types';
 
 const AGENT_CATEGORIES: AgentCategory[] = ['account', 'permissions', 'tools', 'models'];
-const ACCOUNT_ONLY_AGENT_CATEGORIES: AgentCategory[] = ['account'];
 const NO_PERMISSION_AGENT_CATEGORIES: AgentCategory[] = ['account', 'tools', 'models'];
 
 export default function AgentCategoryTabsSection({
@@ -13,11 +12,11 @@ export default function AgentCategoryTabsSection({
   selectedAgent,
 }: AgentCategoryTabsSectionProps) {
   const { t } = useTranslation('settings');
-  const categories = selectedAgent === 'hoocode'
-    ? ACCOUNT_ONLY_AGENT_CATEGORIES
-    : selectedAgent === 'opencode'
-      ? NO_PERMISSION_AGENT_CATEGORIES
-      : AGENT_CATEGORIES;
+  // HooCode mirrors Claude (account + permissions + tools + models); only
+  // OpenCode drops the permissions tab.
+  const categories = selectedAgent === 'opencode'
+    ? NO_PERMISSION_AGENT_CATEGORIES
+    : AGENT_CATEGORIES;
 
   return (
     <div role="tablist" className="settings-segment flex-wrap">
