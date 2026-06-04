@@ -4,8 +4,8 @@
   "description": "A web-based UI for HooCode, Claude Code, and GitHub Copilot",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FAFAF7",
-  "theme_color": "#FAFAF7",
+  "background_color": "#FAFAFA",
+  "theme_color": "#FAFAFA",
   "orientation": "portrait-primary",
   "scope": "/",
   "icons": [

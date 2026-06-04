@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72" role="img" aria-labelledby="hoo-icon-72-title">
   <title id="hoo-icon-72-title">Hoo symbol — 72x72</title>
-  <rect width="72" height="72" rx="14" fill="#09090B"/>
-  <path d="M14,26 A12.2,12.2 0 0 0 14,46" fill="none" stroke="#00F0FF" stroke-width="2.2" stroke-linecap="round"/>
-  <path d="M58,26 A12.2,12.2 0 0 1 58,46" fill="none" stroke="#00F0FF" stroke-width="2.2" stroke-linecap="round"/>
-  <circle cx="25" cy="36" r="10.8" fill="none" stroke="#FAFAFA" stroke-width="3.2"/>
-  <circle cx="47" cy="36" r="10.8" fill="none" stroke="#FAFAFA" stroke-width="3.2"/>
-  <polygon points="36,32.1 39.9,36 36,39.9 32.1,36" fill="#00F0FF"/>
+  <rect width="72" height="72" rx="14.4" fill="#09090B"/>
+  <path d="M14.4,25.9 A12.2,12.2 0 0 0 14.4,46.1" fill="none" stroke="#00F0FF" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M57.6,25.9 A12.2,12.2 0 0 1 57.6,46.1" fill="none" stroke="#00F0FF" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="25.2" cy="36" r="10.8" fill="none" stroke="#FAFAFA" stroke-width="3.2"/>
+  <circle cx="46.8" cy="36" r="10.8" fill="none" stroke="#FAFAFA" stroke-width="3.2"/>
+  <polygon points="36,32 40,36 36,40 32,36" fill="#00F0FF"/>
 </svg>

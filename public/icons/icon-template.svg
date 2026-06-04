@@ -1,12 +1,10 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background fills entire canvas - iOS will handle corner rounding -->
-  <rect width="512" height="512" fill="hsl(240 5.9% 10%)"/>
-  
-  <!-- MessageSquare icon - scaled and centered -->
-  <path d="M128 144C128 126.327 142.327 112 160 112H352C369.673 112 384 126.327 384 144V272C384 289.673 369.673 304 352 304H224L128 400V144Z" 
-        stroke="white" 
-        stroke-width="32" 
-        stroke-linecap="round" 
-        stroke-linejoin="round" 
-        fill="none"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="hoo-icon-template-title">
+  <title id="hoo-icon-template-title">Hoo symbol — master icon template</title>
+  <!-- Background fills the entire canvas; platforms apply their own corner masking. -->
+  <rect width="512" height="512" rx="102.4" fill="#09090B"/>
+  <path d="M102.4,184.3 A87,87 0 0 0 102.4,327.7" fill="none" stroke="#00F0FF" stroke-width="15.4" stroke-linecap="round"/>
+  <path d="M409.6,184.3 A87,87 0 0 1 409.6,327.7" fill="none" stroke="#00F0FF" stroke-width="15.4" stroke-linecap="round"/>
+  <circle cx="179.2" cy="256" r="76.8" fill="none" stroke="#FAFAFA" stroke-width="23"/>
+  <circle cx="332.8" cy="256" r="76.8" fill="none" stroke="#FAFAFA" stroke-width="23"/>
+  <polygon points="256,227.8 284.2,256 256,284.2 227.8,256" fill="#00F0FF"/>
 </svg>

@@ -1,20 +1,9 @@
-<svg width="152" height="152" viewBox="0 0 152 152" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background -->
-  <rect x="19" y="19" width="114" height="114" rx="23" fill="#111110"/>
-  <rect x="19" y="19" width="114" height="114" rx="23" stroke="#2a2a29" stroke-width="2"/>
-  
-  <!-- Left bracket -->
-  <path d="M51 62L41 76L51 90" 
-        stroke="#f5f5f5" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-  
-  <!-- Right bracket -->
-  <path d="M101 62L111 76L101 90" 
-        stroke="#f5f5f5" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-  
-  <!-- Center slash -->
-  <path d="M69 97L83 55" stroke="#6366f1" stroke-width="6" stroke-linecap="round"/>
-  
-  <!-- AI sparkle dots -->
-  <circle cx="76" cy="40" r="4" fill="#6366f1"/>
-  <circle cx="76" cy="112" r="4" fill="#6366f1"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 152" width="152" height="152" role="img" aria-labelledby="hoo-icon-152-title">
+  <title id="hoo-icon-152-title">Hoo symbol — 152x152</title>
+  <rect width="152" height="152" rx="30.4" fill="#09090B"/>
+  <path d="M30.4,54.7 A25.8,25.8 0 0 0 30.4,97.3" fill="none" stroke="#00F0FF" stroke-width="4.6" stroke-linecap="round"/>
+  <path d="M121.6,54.7 A25.8,25.8 0 0 1 121.6,97.3" fill="none" stroke="#00F0FF" stroke-width="4.6" stroke-linecap="round"/>
+  <circle cx="53.2" cy="76" r="22.8" fill="none" stroke="#FAFAFA" stroke-width="6.8"/>
+  <circle cx="98.8" cy="76" r="22.8" fill="none" stroke="#FAFAFA" stroke-width="6.8"/>
+  <polygon points="76,67.6 84.4,76 76,84.4 67.6,76" fill="#00F0FF"/>
 </svg>
