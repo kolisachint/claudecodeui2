@@ -12,6 +12,7 @@ import { formatUsageLimitText } from '../../utils/chatFormatting';
 import { getClaudePermissionSuggestion } from '../../utils/chatPermissions';
 import type { Project } from '../../../../types/app';
 import { ToolRenderer, shouldHideToolResult } from '../../tools';
+import { ToolStatusBadge } from '../../tools/components';
 import { Reasoning, ReasoningTrigger, ReasoningContent } from '../../../../shared/view/ui';
 
 import { Markdown } from './Markdown';
@@ -183,13 +184,27 @@ const MessageComponent = memo(({ message, prevMessage, createDiff, onFileOpen, o
 
             {message.isToolUse ? (
               <div className="msg-tool">
-                <div className="flex flex-col">
-                  <div className="flex flex-col">
-                    <Markdown className="prose prose-sm max-w-none dark:prose-invert">
-                      {String(message.displayText || '')}
-                    </Markdown>
-                  </div>
+                <div className="tool-head">
+                  <span className="tool-glyph" aria-hidden="true">▍</span>
+                  <span className="tool-name">{message.toolName || 'Tool'}</span>
+                  <span className="tool-summary" />
+                  <ToolStatusBadge
+                    status={
+                      message.toolResult
+                        ? (message.toolResult.isError ? 'error' : 'completed')
+                        : 'running'
+                    }
+                  />
                 </div>
+                {!!message.displayText && (
+                  <div className="flex flex-col">
+                    <div className="flex flex-col">
+                      <Markdown className="prose prose-sm max-w-none dark:prose-invert">
+                        {String(message.displayText || '')}
+                      </Markdown>
+                    </div>
+                  </div>
+                )}
 
                 {!!message.toolInput && (
                   <ToolRenderer
