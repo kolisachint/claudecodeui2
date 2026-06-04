@@ -1,3 +1,10 @@
+## [2.5.5](https://github.com/kolisachint/hoocowork/compare/v2.5.4...v2.5.5) (2026-06-04)
+
+### Continuous Integration
+
+* **release:** publish npm + source archives only, drop platform binaries ([ccfaea8](https://github.com/kolisachint/hoocowork/commit/ccfaea8b8c9bf83c2d25a21274aa19c7efe313cc))
+* **release:** publish on version-bump merge to main ([d6b923a](https://github.com/kolisachint/hoocowork/commit/d6b923a5976459de2df5a6af9b8a186e6f4747cd))
+
 ## [2.5.4](https://github.com/kolisachint/hoocowork/compare/v2.5.1...v2.5.4) (2026-06-04)
 
 ### Features
