@@ -38,6 +38,8 @@ export interface ProviderDescriptor {
   /** One-line description for the picker. */
   description: string;
   tier: ProviderTier;
+  /** Whether the composer should offer the extended-thinking selector. */
+  supportsThinking: boolean;
   /** Backend auth-status endpoint for this provider. */
   authStatusEndpoint: string;
 }
@@ -48,7 +50,7 @@ export interface ProviderDescriptor {
  */
 const PROVIDER_UI_META: Record<
   LLMProvider,
-  { displayName: string; label: string; vendor: string; glyph: string; description: string }
+  { displayName: string; label: string; vendor: string; glyph: string; description: string; supportsThinking: boolean }
 > = {
   hoocode: {
     displayName: 'HooCode',
@@ -56,6 +58,7 @@ const PROVIDER_UI_META: Record<
     vendor: 'HooCowork',
     glyph: '▽',
     description: "HooCowork's own coding agent.",
+    supportsThinking: true,
   },
   claude: {
     displayName: 'Claude Code',
@@ -63,6 +66,7 @@ const PROVIDER_UI_META: Record<
     vendor: 'Anthropic',
     glyph: '◆',
     description: "Anthropic's official CLI for coding agents.",
+    supportsThinking: true,
   },
   githubcopilot: {
     displayName: 'GitHub Copilot',
@@ -70,6 +74,7 @@ const PROVIDER_UI_META: Record<
     vendor: 'GitHub',
     glyph: '⌘',
     description: "GitHub's Copilot coding agent in your terminal.",
+    supportsThinking: false,
   },
   codex: {
     displayName: 'Codex',
@@ -77,6 +82,7 @@ const PROVIDER_UI_META: Record<
     vendor: 'OpenAI',
     glyph: '○',
     description: "OpenAI's Codex CLI.",
+    supportsThinking: false,
   },
   gemini: {
     displayName: 'Gemini CLI',
@@ -84,6 +90,7 @@ const PROVIDER_UI_META: Record<
     vendor: 'Google',
     glyph: '△',
     description: "Google's Gemini command-line interface.",
+    supportsThinking: false,
   },
   cursor: {
     displayName: 'Cursor CLI',
@@ -91,6 +98,7 @@ const PROVIDER_UI_META: Record<
     vendor: 'Cursor',
     glyph: '◇',
     description: "Cursor's command-line interface.",
+    supportsThinking: false,
   },
   opencode: {
     displayName: 'OpenCode',
@@ -98,6 +106,7 @@ const PROVIDER_UI_META: Record<
     vendor: 'OpenCode',
     glyph: '□',
     description: "OpenCode's command-line coding agent.",
+    supportsThinking: false,
   },
 };
 
@@ -116,6 +125,7 @@ export const PROVIDER_DESCRIPTORS: ProviderDescriptor[] = PROVIDERS.map((cfg) =>
     vendor: meta.vendor,
     glyph: meta.glyph,
     description: meta.description,
+    supportsThinking: meta.supportsThinking,
     authStatusEndpoint: `/api/providers/${id}/auth/status`,
   };
 });

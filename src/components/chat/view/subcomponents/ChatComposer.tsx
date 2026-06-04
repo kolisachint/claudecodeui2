@@ -12,7 +12,7 @@ import type {
   TouchEvent,
 } from 'react';
 import { useState, useEffect, useRef } from 'react';
-import { PaperclipIcon, XIcon, ArrowDownIcon, ChevronDown, Brain } from 'lucide-react';
+import { PaperclipIcon, XIcon, ArrowDownIcon, ChevronDown } from 'lucide-react';
 
 import { getProviderDescriptor } from '../../../../providers/provider-registry';
 
@@ -347,20 +347,22 @@ export default function ChatComposer({
                 <ChevronDown size={11} className="modelpick-chev" />
               </button>
               {modelDropdownOpen && (
-                <div className="think-dropdown max-h-48 overflow-y-auto" style={{ width: 280, left: 0, bottom: 'calc(100% + 6px)' }}>
-                  {modelOptions.map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      className={`think-option ${option.value === activeModel ? 'active' : ''}`}
-                      onClick={() => { onModelChange(option.value); setModelDropdownOpen(false); }}
-                    >
-                      <div className="think-option-head">
-                        <span className="think-option-name">{option.label}</span>
-                        {option.value === activeModel && <span className="think-option-active-pill">active</span>}
-                      </div>
-                    </button>
-                  ))}
+                <div className="think-dropdown" style={{ width: 280, left: 0, right: 'auto', bottom: 'calc(100% + 6px)' }}>
+                  <div className="modelpick-list">
+                    {modelOptions.map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        className={`think-option ${option.value === activeModel ? 'active' : ''}`}
+                        onClick={() => { onModelChange(option.value); setModelDropdownOpen(false); }}
+                      >
+                        <div className="think-option-head">
+                          <span className="think-option-name">{option.label}</span>
+                          {option.value === activeModel && <span className="think-option-active-pill">active</span>}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -377,7 +379,7 @@ export default function ChatComposer({
               </span>
             </button>
 
-            {provider === 'claude' && (
+            {providerDesc?.supportsThinking && (
               <ThinkingModeSelector selectedMode={thinkingMode} onModeChange={setThinkingMode} onClose={() => {}} className="" variant="pill" />
             )}
 

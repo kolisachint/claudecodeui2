@@ -73,6 +73,11 @@ function ThinkingModeSelector({ selectedMode, onModeChange, onClose, className =
       position: 'fixed',
       top,
       left,
+      // Override the `.think-dropdown` class defaults (bottom/right), which are
+      // meant for the absolutely-positioned model dropdown and would otherwise
+      // collapse this fixed, portal-rendered panel to zero height.
+      right: 'auto',
+      bottom: 'auto',
       width,
       maxHeight: availableHeight,
       zIndex: 80,
