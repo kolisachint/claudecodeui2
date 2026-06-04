@@ -1,17 +1,21 @@
 name: Release
 
+# Publishes to npm when the `version` in package.json changes on `main` — i.e.
+# when a version-bump PR is merged. Bump the version (and CHANGELOG) in a PR;
+# merging it cuts the tag + GitHub Release (with source archives) and publishes
+# to npm. Already-tagged versions are skipped, so unrelated merges and re-runs
+# are no-ops. `workflow_dispatch` is kept as a manual "publish current version"
+# button.
+#
+# Requires the NPM_TOKEN secret (npm automation token authorized for the
+# @kolisachint scope) and the RELEASE_PAT secret (push tag + create release).
+
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
   workflow_dispatch:
-    inputs:
-      increment:
-        description: 'Version bump: patch, minor, major'
-        required: true
-        default: 'patch'
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
 
 jobs:
   release:
@@ -24,6 +28,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          fetch-tags: true
           token: ${{ secrets.RELEASE_PAT }}
 
       - uses: oven-sh/setup-bun@v2
@@ -35,39 +40,47 @@ jobs:
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
-      - run: bun install --frozen-lockfile
+      - name: Resolve version
+        id: version
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
 
-      - run: bun run build
-
-      - run: bun test
-
-      - name: Bump version
+      - name: Skip if this version is already released
+        id: check
         run: |
-          NEW_VERSION=$(bun x semver -i ${{ inputs.increment }} $(node -p "require('./package.json').version"))
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
-          node -e "const p=require('./package.json'); p.version='$NEW_VERSION'; require('fs').writeFileSync('package.json', JSON.stringify(p, null, 2)+'\n')"
+          git fetch --tags --force >/dev/null 2>&1 || true
+          if git rev-parse "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "v${{ steps.version.outputs.version }} already tagged — nothing to release."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Generate changelog
-        run: |
-          bun x conventional-changelog-cli -p conventionalcommits -i CHANGELOG.md -s
+      - if: steps.check.outputs.release == 'true'
+        run: bun install --frozen-lockfile
 
-      - name: Commit and tag
+      - if: steps.check.outputs.release == 'true'
+        run: bun run build
+
+      - if: steps.check.outputs.release == 'true'
+        run: bun test
+
+      - name: Tag
+        if: steps.check.outputs.release == 'true'
         run: |
-          git add package.json CHANGELOG.md
-          git commit -m "chore(release): v${{ env.NEW_VERSION }}"
-          git tag v${{ env.NEW_VERSION }}
-          git push origin main --tags
+          git tag "v${{ steps.version.outputs.version }}"
+          git push origin "v${{ steps.version.outputs.version }}"
 
       - name: Create GitHub Release
+        if: steps.check.outputs.release == 'true'
         run: |
-          gh release create v${{ env.NEW_VERSION }} \
-            --title "HooCowork v${{ env.NEW_VERSION }}" \
-            --notes-file <(bun x conventional-changelog-cli -p conventionalcommits -r 2 | tail -n +5) \
+          gh release create "v${{ steps.version.outputs.version }}" \
+            --title "HooCowork v${{ steps.version.outputs.version }}" \
             --generate-notes
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
 
       - name: Publish to npm
+        if: steps.check.outputs.release == 'true'
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           npm publish --access public
