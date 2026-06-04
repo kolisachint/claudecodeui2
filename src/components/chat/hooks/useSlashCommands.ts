@@ -4,6 +4,7 @@ import Fuse from 'fuse.js';
 
 import { authenticatedFetch } from '../../../utils/api';
 import { safeLocalStorage } from '../utils/chatStorage';
+import { loadSessionResource } from '../utils/sessionResourceCache';
 import type { Project } from '../../../types/app';
 
 const COMMAND_QUERY_DEBOUNCE_MS = 150;
@@ -16,6 +17,29 @@ export interface SlashCommand {
   type?: string;
   metadata?: Record<string, unknown>;
   [key: string]: unknown;
+}
+
+/**
+ * Fetch and merge the built-in + custom slash commands for a project/provider.
+ * Wrapped by the session cache so the list is fetched live once per
+ * project+provider and reused for the rest of the session.
+ */
+async function fetchCommandList(projectPath: string | undefined, provider?: string): Promise<SlashCommand[]> {
+  const response = await authenticatedFetch('/api/commands/list', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ projectPath, provider }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch commands');
+  }
+
+  const data = await response.json();
+  return [
+    ...((data.builtIn || []) as SlashCommand[]).map((command) => ({ ...command, type: 'built-in' })),
+    ...((data.custom || []) as SlashCommand[]).map((command) => ({ ...command, type: 'custom' })),
+  ];
 }
 
 interface UseSlashCommandsOptions {
@@ -83,56 +107,42 @@ export function useSlashCommands({
   }, [clearCommandQueryTimer]);
 
   useEffect(() => {
-    const fetchCommands = async () => {
-      if (!selectedProject) {
-        setSlashCommands([]);
-        setFilteredCommands([]);
-        return;
-      }
+    if (!selectedProject) {
+      setSlashCommands([]);
+      setFilteredCommands([]);
+      return;
+    }
 
-      try {
-        const response = await authenticatedFetch('/api/commands/list', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            projectPath: selectedProject.path,
-            provider,
-          }),
-        });
+    let cancelled = false;
+    const { projectId, path: projectPath } = selectedProject;
+    const cacheKey = `commands:${projectPath}:${provider ?? 'default'}`;
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch commands');
+    loadSessionResource(cacheKey, () => fetchCommandList(projectPath, provider))
+      .then((allCommands) => {
+        if (cancelled) {
+          return;
         }
-
-        const data = await response.json();
-        const allCommands: SlashCommand[] = [
-          ...((data.builtIn || []) as SlashCommand[]).map((command) => ({
-            ...command,
-            type: 'built-in',
-          })),
-          ...((data.custom || []) as SlashCommand[]).map((command) => ({
-            ...command,
-            type: 'custom',
-          })),
-        ];
-
-        const parsedHistory = readCommandHistory(selectedProject.projectId);
+        // Usage-based ordering is applied per-render (not cached) so the most
+        // recently used commands stay on top as history changes.
+        const parsedHistory = readCommandHistory(projectId);
         const sortedCommands = [...allCommands].sort((commandA, commandB) => {
           const commandAUsage = parsedHistory[commandA.name] || 0;
           const commandBUsage = parsedHistory[commandB.name] || 0;
           return commandBUsage - commandAUsage;
         });
-
         setSlashCommands(sortedCommands);
-      } catch (error) {
+      })
+      .catch((error) => {
+        if (cancelled) {
+          return;
+        }
         console.error('Error fetching slash commands:', error);
         setSlashCommands([]);
-      }
-    };
+      });
 
-    fetchCommands();
+    return () => {
+      cancelled = true;
+    };
   }, [selectedProject, provider]);
 
   useEffect(() => {

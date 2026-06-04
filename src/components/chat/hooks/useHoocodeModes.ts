@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-
 import { authenticatedFetch } from '../../../utils/api';
+import { useSessionResource } from '../utils/sessionResourceCache';
+
+const MODES_CACHE_KEY = 'hoocode:modes';
 
 export type HoocodeMode = {
   name: string;
@@ -16,6 +17,11 @@ type HoocodeModesResponse = {
   error?: { message?: string };
 };
 
+type HoocodeModesData = {
+  installed: boolean;
+  modes: HoocodeMode[];
+};
+
 type UseHoocodeModesResult = {
   modes: HoocodeMode[];
   loading: boolean;
@@ -24,40 +30,35 @@ type UseHoocodeModesResult = {
   refresh: () => Promise<void>;
 };
 
+async function fetchHoocodeModes(): Promise<HoocodeModesData> {
+  const response = await authenticatedFetch('/api/providers/hoocode/modes');
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+  const payload = (await response.json()) as HoocodeModesResponse;
+  const data = payload.data;
+  if (!payload.success || !data) {
+    throw new Error(payload.error?.message || 'Failed to load Hoocode modes');
+  }
+  return { installed: data.installed, modes: data.modes };
+}
+
+/**
+ * Live Hoocode mode catalog (`~/.hoocode/modes/*`), cached for the whole session
+ * and shared across consumers so it isn't re-read on every chat remount.
+ */
 export function useHoocodeModes({ enabled = true }: { enabled?: boolean } = {}): UseHoocodeModesResult {
-  const [modes, setModes] = useState<HoocodeMode[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [installed, setInstalled] = useState(true);
-  const fetchedOnceRef = useRef(false);
+  const { data, loading, error, refresh } = useSessionResource<HoocodeModesData>(
+    MODES_CACHE_KEY,
+    fetchHoocodeModes,
+    { enabled },
+  );
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await authenticatedFetch('/api/providers/hoocode/modes');
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-      const payload = (await response.json()) as HoocodeModesResponse;
-      const data = payload.data;
-      if (!payload.success || !data) {
-        throw new Error(payload.error?.message || 'Failed to load Hoocode modes');
-      }
-      setInstalled(data.installed);
-      setModes(data.modes);
-    } catch (caughtError) {
-      setError(caughtError instanceof Error ? caughtError.message : 'Failed to load Hoocode modes');
-    } finally {
-      setLoading(false);
-      fetchedOnceRef.current = true;
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!enabled || fetchedOnceRef.current) return;
-    void load();
-  }, [enabled, load]);
-
-  return { modes, loading, error, installed, refresh: load };
+  return {
+    modes: data?.modes ?? [],
+    loading,
+    error,
+    installed: data?.installed ?? true,
+    refresh,
+  };
 }

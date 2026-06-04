@@ -108,6 +108,8 @@ interface ChatComposerProps {
   activeModel: string;
   modelOptions: { value: string; label: string }[];
   onModelChange: (value: string) => void;
+  /** Whether the active model supports extended thinking (driven by the live catalog). */
+  thinkingAvailable?: boolean;
 }
 
 export default function ChatComposer({
@@ -165,6 +167,7 @@ export default function ChatComposer({
   activeModel,
   modelOptions,
   onModelChange,
+  thinkingAvailable = true,
 }: ChatComposerProps) {
   const { t } = useTranslation('chat');
   const textareaRect = textareaRef.current?.getBoundingClientRect();
@@ -379,7 +382,7 @@ export default function ChatComposer({
               </span>
             </button>
 
-            {providerDesc?.supportsThinking && (
+            {providerDesc?.supportsThinking && thinkingAvailable && (
               <ThinkingModeSelector selectedMode={thinkingMode} onModeChange={setThinkingMode} onClose={() => {}} className="" variant="pill" />
             )}
 

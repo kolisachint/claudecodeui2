@@ -343,6 +343,16 @@ function ChatInterface({
     }
   }, [provider, hoocodeModelsList]);
 
+  // Whether the active model supports extended thinking. HooCode reports this
+  // per-model in its live `--list-models` catalog; other Claude-family providers
+  // always allow it. Unknown models default to allowed so the toggle isn't lost.
+  const thinkingAvailable = useMemo(() => {
+    if (provider !== 'hoocode') return true;
+    if (hoocodeModelsList.length === 0) return true;
+    const match = hoocodeModelsList.find((m) => m.value === hoocodeModel);
+    return match ? match.thinking : true;
+  }, [provider, hoocodeModelsList, hoocodeModel]);
+
   const setActiveModel = useCallback((value: string) => {
     switch (provider) {
       case 'cursor': setCursorModel(value); localStorage.setItem('cursor-model', value); break;
@@ -514,6 +524,7 @@ function ChatInterface({
           activeModel={activeModelLabel}
           modelOptions={modelOptions}
           onModelChange={setActiveModel}
+          thinkingAvailable={thinkingAvailable}
         />
       </section>
 
