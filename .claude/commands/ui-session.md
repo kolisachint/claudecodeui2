@@ -8,8 +8,11 @@ $ARGUMENTS (optional) = a short session name used for the working branch (e.g. `
 ## What I do when this runs
 
 1. **Read the map first.** Read `docs/ui-map.md` so I can locate components without
-   re-searching. Do NOT bulk-read large component files up front — only read the specific
-   file(s) a request touches, and prefer the `explore` subagent to locate things.
+   re-searching. Use its **Quick Index** to jump straight to the file(s) a request touches
+   and open only those (with `offset`/`limit`). Do NOT bulk-read large component files up
+   front. Only fall back to the `explore` subagent when the map doesn't cover something —
+   and when I do, I add the missing path back to `docs/ui-map.md` so the next request is
+   cheaper.
 
 2. **Create a working branch.** From up-to-date `main`:
    - `git switch main && git pull --ff-only`
@@ -21,7 +24,8 @@ $ARGUMENTS (optional) = a short session name used for the working branch (e.g. `
    - Report the URL: http://localhost:5173
 
 4. **Enter iterate mode.** I'm now ready for UI requests over chat. For each request:
-   - Locate the component (use `docs/ui-map.md`; delegate search to `explore` if unclear).
+   - Locate the component via the `docs/ui-map.md` Quick Index; delegate search to
+     `explore` only if the map doesn't cover it (then update the map).
    - Make the smallest correct edit; Vite hot-reloads so you see it live.
    - Keep edits scoped and show a short diff for non-trivial changes.
    - Delegate self-contained edits to the `edit` subagent to keep context lean.
