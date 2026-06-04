@@ -40,6 +40,12 @@ interface MentionableFile {
   path: string;
 }
 
+interface MentionableTask {
+  id: string;
+  title: string;
+  status?: string;
+}
+
 interface SlashCommand {
   name: string;
   description?: string;
@@ -82,6 +88,10 @@ interface ChatComposerProps {
   filteredFiles: MentionableFile[];
   selectedFileIndex: number;
   onSelectFile: (file: MentionableFile) => void;
+  showTaskDropdown: boolean;
+  filteredTasks: MentionableTask[];
+  selectedTaskIndex: number;
+  onSelectTask: (task: MentionableTask) => void;
   filteredCommands: SlashCommand[];
   selectedCommandIndex: number;
   onCommandSelect: (command: SlashCommand, index: number, isHover: boolean) => void;
@@ -141,6 +151,10 @@ export default function ChatComposer({
   filteredFiles,
   selectedFileIndex,
   onSelectFile,
+  showTaskDropdown,
+  filteredTasks,
+  selectedTaskIndex,
+  onSelectTask,
   filteredCommands,
   selectedCommandIndex,
   onCommandSelect,
@@ -251,6 +265,48 @@ export default function ChatComposer({
                   <div className="min-w-0 flex-1">
                     <div className="font-mono text-[var(--fs-md)] font-semibold text-foreground">{file.name}</div>
                     <div className="truncate font-mono text-[var(--fs-sm)] text-muted-foreground">{file.path}</div>
+                  </div>
+                  {isSelected && (
+                    <span className="ml-2 shrink-0 text-[var(--fs-sm)] font-semibold text-[var(--brand-accent)]">{'<-'}</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {showTaskDropdown && filteredTasks.length > 0 && (
+          <div
+            role="listbox"
+            aria-label={t('input.mentionTask', { defaultValue: 'Reference a task' })}
+            className="command-menu absolute bottom-full left-0 right-0 z-50 mb-2 max-h-[300px] overflow-y-auto rounded-lg border border-border bg-background p-2 shadow-lg dark:bg-muted"
+          >
+            {filteredTasks.map((task, index) => {
+              const isSelected = index === selectedTaskIndex;
+              return (
+                <div
+                  key={task.id}
+                  role="option"
+                  aria-selected={isSelected}
+                  className={`command-item mb-0.5 flex cursor-pointer touch-manipulation items-start gap-2 rounded-md px-3 py-2 transition-colors ${
+                    isSelected ? 'bg-[var(--brand-accent)]/5 dark:bg-[var(--brand-accent)]/10' : 'bg-transparent'
+                  }`}
+                  onMouseDown={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                  }}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    onSelectTask(task);
+                  }}
+                >
+                  <span className="shrink-0 font-mono text-[var(--fs-sm)] font-semibold text-[var(--brand-accent)]">#{task.id}</span>
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate text-[var(--fs-md)] font-medium text-foreground">{task.title}</div>
+                    {task.status && (
+                      <div className="font-mono text-[var(--fs-sm)] text-muted-foreground">{task.status}</div>
+                    )}
                   </div>
                   {isSelected && (
                     <span className="ml-2 shrink-0 text-[var(--fs-sm)] font-semibold text-[var(--brand-accent)]">{'<-'}</span>

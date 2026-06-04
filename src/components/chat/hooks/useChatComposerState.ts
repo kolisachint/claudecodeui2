@@ -26,6 +26,7 @@ import { escapeRegExp } from '../utils/chatFormatting';
 
 import { useFileMentions } from './useFileMentions';
 import { type SlashCommand, useSlashCommands } from './useSlashCommands';
+import { useTaskMentions } from './useTaskMentions';
 
 type PendingViewSession = {
   sessionId: string | null;
@@ -384,6 +385,7 @@ export function useChatComposerState({
     selectedFileIndex,
     renderInputWithMentions,
     selectFile,
+    cursorPosition,
     setCursorPosition,
     handleFileMentionsKeyDown,
   } = useFileMentions({
@@ -391,6 +393,20 @@ export function useChatComposerState({
     input,
     setInput,
     textareaRef,
+  });
+
+  const {
+    showTaskDropdown,
+    filteredTasks,
+    selectedTaskIndex,
+    selectTask,
+    handleTaskMentionsKeyDown,
+  } = useTaskMentions({
+    selectedProject,
+    input,
+    setInput,
+    textareaRef,
+    cursorPosition,
   });
 
   const syncInputOverlayScroll = useCallback((target: HTMLTextAreaElement) => {
@@ -838,7 +854,11 @@ export function useChatComposerState({
         return;
       }
 
-      if (event.key === 'Tab' && !showFileDropdown && !showCommandMenu) {
+      if (handleTaskMentionsKeyDown(event)) {
+        return;
+      }
+
+      if (event.key === 'Tab' && !showFileDropdown && !showCommandMenu && !showTaskDropdown) {
         event.preventDefault();
         cyclePermissionMode();
         return;
@@ -862,10 +882,12 @@ export function useChatComposerState({
       cyclePermissionMode,
       handleCommandMenuKeyDown,
       handleFileMentionsKeyDown,
+      handleTaskMentionsKeyDown,
       handleSubmit,
       sendByCtrlEnter,
       showCommandMenu,
       showFileDropdown,
+      showTaskDropdown,
     ],
   );
 
@@ -1009,6 +1031,10 @@ export function useChatComposerState({
     selectedFileIndex,
     renderInputWithMentions,
     selectFile,
+    showTaskDropdown,
+    filteredTasks,
+    selectedTaskIndex,
+    selectTask,
     attachedImages,
     setAttachedImages,
     uploadingImages,

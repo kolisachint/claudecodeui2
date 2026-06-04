@@ -284,6 +284,7 @@ export function useFileMentions({ selectedProject, input, setInput, textareaRef 
     selectedFileIndex,
     renderInputWithMentions,
     selectFile,
+    cursorPosition,
     setCursorPosition,
     handleFileMentionsKeyDown,
   };

@@ -179,6 +179,10 @@ function ChatInterface({
     selectedFileIndex,
     renderInputWithMentions,
     selectFile,
+    showTaskDropdown,
+    filteredTasks,
+    selectedTaskIndex,
+    selectTask,
     attachedImages,
     setAttachedImages,
     uploadingImages,
@@ -485,6 +489,10 @@ function ChatInterface({
           filteredFiles={filteredFiles}
           selectedFileIndex={selectedFileIndex}
           onSelectFile={selectFile}
+          showTaskDropdown={showTaskDropdown}
+          filteredTasks={filteredTasks}
+          selectedTaskIndex={selectedTaskIndex}
+          onSelectTask={selectTask}
           filteredCommands={filteredCommands}
           selectedCommandIndex={selectedCommandIndex}
           onCommandSelect={handleCommandSelect}
